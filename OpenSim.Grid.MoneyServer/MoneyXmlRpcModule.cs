@@ -214,12 +214,8 @@ namespace OpenSim.Grid.MoneyServer
 		//
 		public string GetSSLCommonName(XmlRpcRequest request)
 		{
-			if (request.Params.Count>5) {
-				m_sslCommonName = (string)request.Params[5];
-			}
-			else if (request.Params.Count==5) {
+			if (request.Params.Count>4) {
 				m_sslCommonName = (string)request.Params[4];
-				if (m_sslCommonName=="gridproxy") m_sslCommonName = "";
 			}
 			else {
 				m_sslCommonName = "";

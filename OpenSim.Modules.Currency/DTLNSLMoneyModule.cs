@@ -586,6 +586,13 @@ namespace OpenSim.Modules.Currency
 			ForceTransferMoney(fromAgentID, toAgentID, amount, (int)TransactionType.MoveMoney, UUID.Zero, (ulong)0, UUID.Zero, text);
         }
 
+        // for 0.9.1 over
+        public bool MoveMoney(UUID fromAgentID, UUID toAgentID, int amount, MoneyTransactionType type, string text)
+        {
+			bool ret = ForceTransferMoney(fromAgentID, toAgentID, amount, (int)type, UUID.Zero, (ulong)0, UUID.Zero, text);
+            return ret;
+        }
+
 		#endregion
 
 

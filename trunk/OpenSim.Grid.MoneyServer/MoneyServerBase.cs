@@ -146,7 +146,8 @@ namespace OpenSim.Grid.MoneyServer
 					}
 				}
 				else {
-					m_httpServer = new BaseHttpServer(m_moneyServerPort, false);
+					//m_httpServer = new BaseHttpServer(m_moneyServerPort, false);
+					m_httpServer = new BaseHttpServer(m_moneyServerPort);
 				}
 
 				SetupMoneyServices();

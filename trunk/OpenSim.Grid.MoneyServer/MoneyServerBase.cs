@@ -135,7 +135,7 @@ namespace OpenSim.Grid.MoneyServer
 						if (pinfo!=null) {
 							//m_httpServer.CertificateValidationCallback = (RemoteCertificateValidationCallback)m_certVerify.ValidateClientCertificate; 
  							pinfo.SetValue(m_httpServer, (RemoteCertificateValidationCallback)m_certVerify.ValidateClientCertificate, null);
-							m_log.Info("[MONEY SERVER]: Set RemoteCertificateValidationCallback");
+							m_log.Info ("[MONEY SERVER]: Set RemoteCertificateValidationCallback");
 						}
 						else {
 							m_log.Error("[MONEY SERVER]: StartupSpecific: CheckClientCert is true. But this MoneyServer does not support CheckClientCert!!");

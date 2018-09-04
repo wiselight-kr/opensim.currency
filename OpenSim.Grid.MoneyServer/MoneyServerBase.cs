@@ -129,8 +129,8 @@ namespace OpenSim.Grid.MoneyServer
 				if (m_certFilename!="") {
 					m_httpServer = new BaseHttpServer(m_moneyServerPort, true, m_certFilename, m_certPassword);
 					if (m_checkClientCert) {
-						Type typeBaseHttpServer = typeof(BaseHttpServer);
-						PropertyInfo pinfo = typeBaseHttpServer.GetProperty("CertificateValidationCallback");
+						Type typeBaseHttpServer = typeof(BaseHttpServer); // BaseHttpServer.cs にパッチがあたっていない場合のため
+						PropertyInfo pinfo = typeBaseHttpServer.GetProperty("CertificateValidationCallback");	
 
 						if (pinfo!=null) {
 							//m_httpServer.CertificateValidationCallback = (RemoteCertificateValidationCallback)m_certVerify.ValidateClientCertificate; 

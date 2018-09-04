@@ -126,23 +126,23 @@ namespace OpenSim.Grid.MoneyServer
 			ReadIniConfig();
 
 			try {
-				//HttpContextFactory.ClientCertificateValidationCallback = null;
-				Type typeHttpContextFactory = typeof(HttpContextFactory);
-				FieldInfo finfo = typeHttpContextFactory.GetField("ClientCertificateValidationCallback");
-				if (finfo!=null) finfo.SetValue(new HttpContextFactory(null, 0, null), null);
+				//Type typeHttpContextFactory = typeof(HttpContextFactory);
+				//FieldInfo finfo = typeHttpContextFactory.GetField("ClientCertificateValidationCallback");
+				//if (finfo!=null) finfo.SetValue(new HttpContextFactory(null, 0, null), null);
 				
 				if (m_certFilename!="") {
 					m_httpServer = new BaseHttpServer(m_moneyServerPort, true, m_certFilename, m_certPassword);
 					if (m_checkClientCert) {
+						m_httpServer.CertificateValidationCallback = (RemoteCertificateValidationCallback)m_certVerify.ValidateClientCertificate;
+						m_log.Info("[MONEY SERVER]: Set RemoteCertificateValidationCallback");
+						/*
 						if (finfo!=null) {
-							//HttpContextFactory.ClientCertificateValidationCallback = m_certVerify.ValidateClientCertificate;
 							finfo.SetValue(new HttpContextFactory(null, 0, null), (RemoteCertificateValidationCallback)m_certVerify.ValidateClientCertificate);
 							m_log.Info("[MONEY SERVER]: Set RemoteCertificateValidationCallback");
 						}
 						else {
 							m_log.Error("[MONEY SERVER]: StartupSpecific: CheckClientCert is true. But this MoneyServer does not support CheckClientCert!!");
-
-						}
+						}*/
 					}
 				}
 				else {

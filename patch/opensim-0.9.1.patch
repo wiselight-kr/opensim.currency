@@ -1,7 +1,7 @@
 diff -Nur OpenSim-/Framework/Servers/HttpServer/BaseHttpServer.cs OpenSim/Framework/Servers/HttpServer/BaseHttpServer.cs
---- OpenSim-/Framework/Servers/HttpServer/BaseHttpServer.cs	2018-08-25 01:15:06.269483109 +0900
-+++ OpenSim/Framework/Servers/HttpServer/BaseHttpServer.cs	2018-09-04 18:10:54.009103723 +0900
-@@ -157,6 +157,11 @@
+--- OpenSim-/Framework/Servers/HttpServer/BaseHttpServer.cs	2019-02-13 17:07:00.037657561 +0900
++++ OpenSim/Framework/Servers/HttpServer/BaseHttpServer.cs	2019-02-13 17:29:49.371393303 +0900
+@@ -158,6 +158,11 @@
              m_port = port;
          }
  

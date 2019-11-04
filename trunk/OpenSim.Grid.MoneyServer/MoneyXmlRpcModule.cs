@@ -1264,7 +1264,7 @@ namespace OpenSim.Grid.MoneyServer
 				return ErrorHash;
 			}
 
-			if (moneyServResp.IsFault) {
+			if (moneyServResp==null || moneyServResp.IsFault) {
 				Hashtable ErrorHash = new Hashtable();
 				ErrorHash["success"] = false;
 				ErrorHash["errorMessage"] = "Failed to perform actions on OpenSim Server";

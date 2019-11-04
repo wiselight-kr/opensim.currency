@@ -66,9 +66,8 @@ namespace NSL.Network.XmlRpc
 				stream = request.GetRequestStream();
 			}
 			catch (Exception ex) {
-				m_log.ErrorFormat("[MONEY NSL RPC]: xxxxxxxxxxxxxxxxxxxxx: {0}", ex);
+				m_log.ErrorFormat("[MONEY NSL RPC]: GetRequestStream Error: {0}", ex);
 			}
-
 
 			//
 			XmlTextWriter xml = new XmlTextWriter(stream, _encoding);

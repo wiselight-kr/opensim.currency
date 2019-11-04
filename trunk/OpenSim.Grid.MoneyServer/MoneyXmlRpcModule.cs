@@ -176,8 +176,8 @@ namespace OpenSim.Grid.MoneyServer
 			m_certFilename = m_cert_config.GetString("ClientCertFilename", m_certFilename);
 			m_certPassword = m_cert_config.GetString("ClientCertPassword", m_certPassword);
 			if (m_certFilename!="") {
-				//m_clientCert = new X509Certificate2(m_certFilename, m_certPassword);
-				m_clientCert = new X509Certificate2(m_certFilename, m_certPassword, X509KeyStorageFlags.MachineKeySet);
+				m_clientCert = new X509Certificate2(m_certFilename, m_certPassword);
+				//m_clientCert = new X509Certificate2(m_certFilename, m_certPassword, X509KeyStorageFlags.MachineKeySet);
 				m_log.Info("[MONEY RPC]: Initialise: Issue Authentication of Client. Cert file is " + m_cacertFilename);
 			}
 

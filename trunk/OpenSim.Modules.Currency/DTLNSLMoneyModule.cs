@@ -285,8 +285,8 @@ namespace OpenSim.Modules.Currency
 				m_certFilename = economyConfig.GetString("ClientCertFilename", m_certFilename);
 				m_certPassword = economyConfig.GetString("ClientCertPassword", m_certPassword);
 				if (m_certFilename!="") {
-					//m_cert = new X509Certificate2(m_certFilename, m_certPassword);
-					m_cert = new X509Certificate2(m_certFilename, m_certPassword, X509KeyStorageFlags.MachineKeySet);
+					m_cert = new X509Certificate2(m_certFilename, m_certPassword);
+					//m_cert = new X509Certificate2(m_certFilename, m_certPassword, X509KeyStorageFlags.MachineKeySet);
 					m_log.InfoFormat("[MONEY]: Issue Authentication of Client. Cert File is " + m_certFilename);
 				}
 

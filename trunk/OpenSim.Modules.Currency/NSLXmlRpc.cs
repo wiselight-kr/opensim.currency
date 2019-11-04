@@ -68,7 +68,6 @@ namespace NSL.Network.XmlRpc
 			catch (Exception ex) {
 				m_log.ErrorFormat("[MONEY NSL RPC]: xxxxxxxxxxxxxxxxxxxxx: {0}", ex);
 			}
-			if (stream==null) return null;
 
 
 			//
@@ -82,7 +81,7 @@ namespace NSL.Network.XmlRpc
 				response = (HttpWebResponse)request.GetResponse();
 			}
 			catch (Exception ex) {
-				m_log.ErrorFormat("[MONEY NSL RPC]: XmlRpcResponse certSend: GetResponse Error: {0}", ex);
+				m_log.ErrorFormat("[MONEY NSL RPC]: XmlRpcResponse certSend: GetResponse Error: {0}", ex.ToString());
 			}
 			StreamReader input = new StreamReader(response.GetResponseStream());
 

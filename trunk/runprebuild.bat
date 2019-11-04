@@ -5,8 +5,8 @@
 setlocal ENABLEEXTENSIONS
 set VALUE_NAME=MSBuildToolsPath
 
-if "%PROCESSOR_ARCHITECTURE%"=="x86" set PROGRAMS="%ProgramFiles%"
-if defined ProgramFiles(x86) set PROGRAMS="%ProgramFiles(x86)%"
+if "%PROCESSOR_ARCHITECTURE%"=="x86" set PROGRAMS=%ProgramFiles%
+if defined ProgramFiles(x86) set PROGRAMS=%ProgramFiles(x86)%
 
 rem Try to find VS2019
 for %%e in (Enterprise Professional Community) do (

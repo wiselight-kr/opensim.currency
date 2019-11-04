@@ -280,7 +280,7 @@ namespace OpenSim.Grid.MoneyServer
 			if (m_moneyCore.IsCheckClientCert()) {
 				string commonName = GetSSLCommonName();
 				if (commonName=="") {
-					m_log.ErrorFormat("[MONEY RPC]: handleClientLogin: Warnning: Check Client Cert is set, but SSL Common Name is empty. Have you patched OpenSim server?");
+					m_log.ErrorFormat("[MONEY RPC]: handleClientLogin: Warnning: Check Client Cert is set, but SSL Common Name is empty.");
 					responseData["success"] = false;
 					responseData["description"] = "SSL Common Name is empty";
 					return response;

@@ -277,12 +277,17 @@ namespace OpenSim.Grid.MoneyServer
 
 			// Check Client Cert
 			if (m_moneyCore.IsCheckClientCert()) {
-				if (GetSSLCommonName()=="") {
-					m_log.ErrorFormat("[MONEY RPC]: handleClientLogin: Warnning: Check Client Cert is set, but SSL Common Name is empty.");
+				string commonName = GetSSLCommonName();
+				if (commonName=="") {
+					m_log.ErrorFormat("[MONEY RPC]: handleClientLogin: Warnning: Check Client Cert is set, but SSL Common Name is empty. Have you patched OpenSim server?");
 					responseData["success"] = false;
 					responseData["description"] = "SSL Common Name is empty";
 					return response;
 				}
+				else {
+					m_log.InfoFormat("[MONEY RPC]: handleClientLogin: SSL Common Name is {0}", commonName);
+				}
+
 			}
 
 			string universalID = string.Empty;

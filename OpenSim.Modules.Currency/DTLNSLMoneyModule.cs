@@ -1815,7 +1815,7 @@ namespace OpenSim.Modules.Currency
 				return ErrorHash;
 			}
 
-			if (moneyServResp.IsFault) {
+			if (moneyServResp==null || moneyServResp.IsFault) {
 				Hashtable ErrorHash = new Hashtable();
 				ErrorHash["success"] = false;
 				ErrorHash["errorMessage"] = "Unable to manage your money at this time. Purchases may be unavailable";

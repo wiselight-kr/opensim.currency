@@ -264,7 +264,7 @@ namespace OpenSim.Grid.MoneyServer
 		/// <returns></returns>
 		public XmlRpcResponse handleClientLogin(XmlRpcRequest request, IPEndPoint remoteClient)
 		{
-			m_log.InfoFormat("[MONEY RPC]: handleClientLogin:");
+			//m_log.InfoFormat("[MONEY RPC]: handleClientLogin:");
 
 			GetSSLCommonName(request);
 
@@ -450,7 +450,7 @@ namespace OpenSim.Grid.MoneyServer
 		//
 		public XmlRpcResponse handleClientLogout(XmlRpcRequest request, IPEndPoint remoteClient)
 		{
-			m_log.InfoFormat("[MONEY RPC]: handleClientLogout:");
+			//m_log.InfoFormat("[MONEY RPC]: handleClientLogout:");
 
 			GetSSLCommonName(request);
 
@@ -497,7 +497,7 @@ namespace OpenSim.Grid.MoneyServer
 		/// <returns></returns>
 		public XmlRpcResponse handleTransaction(XmlRpcRequest request, IPEndPoint remoteClient)
 		{
-			m_log.InfoFormat("[MONEY RPC]: handleTransaction:");
+			//m_log.InfoFormat("[MONEY RPC]: handleTransaction:");
 
 			GetSSLCommonName(request);
 
@@ -620,7 +620,7 @@ namespace OpenSim.Grid.MoneyServer
 		/// <returns></returns>
 		public XmlRpcResponse handleForceTransaction(XmlRpcRequest request, IPEndPoint remoteClient)
 		{
-			m_log.InfoFormat("[MONEY RPC]: handleForceTransaction:");
+			//m_log.InfoFormat("[MONEY RPC]: handleForceTransaction:");
 
 			GetSSLCommonName(request);
 
@@ -740,7 +740,7 @@ namespace OpenSim.Grid.MoneyServer
 		/// <returns></returns>
 		public XmlRpcResponse handleScriptTransaction(XmlRpcRequest request, IPEndPoint remoteClient)
 		{
-			m_log.InfoFormat("[MONEY RPC]: handleScriptTransaction:");
+			//m_log.InfoFormat("[MONEY RPC]: handleScriptTransaction:");
 
 			GetSSLCommonName(request);
 
@@ -870,7 +870,7 @@ namespace OpenSim.Grid.MoneyServer
 		/// <returns></returns>
 		public XmlRpcResponse handleAddBankerMoney(XmlRpcRequest request, IPEndPoint remoteClient)
 		{
-			m_log.InfoFormat("[MONEY RPC]: handleAddBankerMoney:");
+			//m_log.InfoFormat("[MONEY RPC]: handleAddBankerMoney:");
 
 			GetSSLCommonName(request);
 
@@ -973,7 +973,7 @@ namespace OpenSim.Grid.MoneyServer
 		/// <returns></returns>
 		public XmlRpcResponse handlePayMoneyCharge(XmlRpcRequest request, IPEndPoint remoteClient)
 		{
-			m_log.InfoFormat("[MONEY RPC]: handlePayMoneyCharge:");
+			//m_log.InfoFormat("[MONEY RPC]: handlePayMoneyCharge:");
 
 			GetSSLCommonName(request);
 
@@ -1072,7 +1072,7 @@ namespace OpenSim.Grid.MoneyServer
 		/// <returns></returns>
 		public bool  NotifyTransfer(UUID transactionUUID, string msg2sender, string msg2receiver, string objectName)
 		{
-			m_log.InfoFormat("[MONEY RPC]: NotifyTransfer: User has accepted the transaction, now continue with the transaction");
+			//m_log.InfoFormat("[MONEY RPC]: NotifyTransfer: User has accepted the transaction, now continue with the transaction");
 
 			try {
 				if (m_moneyDBService.DoTransfer(transactionUUID)) {
@@ -1168,7 +1168,7 @@ namespace OpenSim.Grid.MoneyServer
 		/// <returns></returns>
 		public XmlRpcResponse handleGetBalance(XmlRpcRequest request, IPEndPoint remoteClient)
 		{
-			m_log.InfoFormat("[MONEY RPC]: handleGetBalance:");
+			//m_log.InfoFormat("[MONEY RPC]: handleGetBalance:");
 
 			GetSSLCommonName(request);
 
@@ -1227,7 +1227,7 @@ namespace OpenSim.Grid.MoneyServer
 		/// <returns>Hashtable with success=>bool and other values</returns>   
 		private Hashtable genericCurrencyXMLRPCRequest(Hashtable reqParams, string method, string uri)
 		{
-			m_log.InfoFormat("[MONEY RPC]: genericCurrencyXMLRPCRequest: to {0}", uri);
+			//m_log.InfoFormat("[MONEY RPC]: genericCurrencyXMLRPCRequest: to {0}", uri);
 
 			if (reqParams.Count<=0 || string.IsNullOrEmpty(method)) return null;
 
@@ -1283,7 +1283,7 @@ namespace OpenSim.Grid.MoneyServer
 		/// <param name="userID"></param>
 		private void UpdateBalance(string userID, string message)
 		{
-			m_log.InfoFormat("[MONEY RPC]: UpdateBalance: ID = {0}, Message = {1}", userID, message);
+			//m_log.InfoFormat("[MONEY RPC]: UpdateBalance: ID = {0}, Message = {1}", userID, message);
 
 			string sessionID  = string.Empty;
 			string secureID   = string.Empty;
@@ -1315,7 +1315,7 @@ namespace OpenSim.Grid.MoneyServer
 		/// <returns></returns>
 		protected bool RollBackTransaction(TransactionData transaction)
 		{
-			m_log.InfoFormat("[MONEY RPC]: RollBackTransaction:");
+			//m_log.InfoFormat("[MONEY RPC]: RollBackTransaction:");
 
 			if(m_moneyDBService.withdrawMoney(transaction.TransUUID, transaction.Receiver, transaction.Amount)) {
 				if(m_moneyDBService.giveMoney(transaction.TransUUID, transaction.Sender, transaction.Amount)) {
@@ -1344,7 +1344,7 @@ namespace OpenSim.Grid.MoneyServer
 		//
 		public XmlRpcResponse handleCancelTransfer(XmlRpcRequest request, IPEndPoint remoteClient)
 		{
-			m_log.InfoFormat("[MONEY RPC]: handleCancelTransfer:");
+			//m_log.InfoFormat("[MONEY RPC]: handleCancelTransfer:");
 
 			GetSSLCommonName(request);
 
@@ -1392,7 +1392,7 @@ namespace OpenSim.Grid.MoneyServer
 		//
 		public XmlRpcResponse handleGetTransaction(XmlRpcRequest request, IPEndPoint remoteClient)
 		{
-			m_log.InfoFormat("[MONEY RPC]: handleGetTransaction:");
+			//m_log.InfoFormat("[MONEY RPC]: handleGetTransaction:");
 
 			GetSSLCommonName(request);
 
@@ -1466,7 +1466,7 @@ namespace OpenSim.Grid.MoneyServer
 
 		public XmlRpcResponse handleWebLogin(XmlRpcRequest request, IPEndPoint remoteClient)
 		{
-			m_log.InfoFormat("[MONEY RPC]: handleWebLogin:");
+			//m_log.InfoFormat("[MONEY RPC]: handleWebLogin:");
 
 			GetSSLCommonName(request);
 
@@ -1505,7 +1505,7 @@ namespace OpenSim.Grid.MoneyServer
 		//
 		public XmlRpcResponse handleWebLogout(XmlRpcRequest request, IPEndPoint remoteClient)
 		{
-			m_log.InfoFormat("[MONEY RPC]: handleWebLogout:");
+			//m_log.InfoFormat("[MONEY RPC]: handleWebLogout:");
 
 			GetSSLCommonName(request);
 
@@ -1547,7 +1547,7 @@ namespace OpenSim.Grid.MoneyServer
 		/// <returns></returns>
 		public XmlRpcResponse handleWebGetBalance(XmlRpcRequest request, IPEndPoint remoteClient)
 		{
-			m_log.InfoFormat("[MONEY RPC]: handleWebGetBalance:");
+			//m_log.InfoFormat("[MONEY RPC]: handleWebGetBalance:");
 
 			GetSSLCommonName(request);
 
@@ -1612,7 +1612,7 @@ namespace OpenSim.Grid.MoneyServer
 		/// <returns></returns>
 		public XmlRpcResponse handleWebGetTransaction(XmlRpcRequest request, IPEndPoint remoteClient)
 		{
-			m_log.InfoFormat("[MONEY RPC]: handleWebGetTransaction:");
+			//m_log.InfoFormat("[MONEY RPC]: handleWebGetTransaction:");
 
 			GetSSLCommonName(request);
 
@@ -1697,7 +1697,7 @@ namespace OpenSim.Grid.MoneyServer
 		/// <returns></returns>
 		public XmlRpcResponse handleWebGetTransactionNum(XmlRpcRequest request, IPEndPoint remoteClient)
 		{
-			m_log.InfoFormat("[MONEY RPC]: handleWebGetTransactionNum:");
+			//m_log.InfoFormat("[MONEY RPC]: handleWebGetTransactionNum:");
 
 			GetSSLCommonName(request);
 

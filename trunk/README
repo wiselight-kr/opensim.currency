@@ -14,7 +14,7 @@
  But, Web Monitor function (ASP.NET) is removed from original DTL Currency. So, this version is less secure than original 
  version!! Please use this at Your Own Risk!!
 
- Attention) 
+Attention) 
   Client(SIM) certification causes an error in mono-5.16 and above.
   Please use mono-5.0 - mono-5.14, if you want to use client(SIM) certification function.
 
@@ -24,9 +24,7 @@
  # cd opensim-0.9.x-source
  # tar xzfv opensim.currency-0.9.x.tar.gz 
  
- # mv bin/HttpServer_OpenSim.dll HttpServer_OpenSim.dll.orig
- # cp opensim.currency-0.9.x/HttpServer_OpenSim/bin/HttpServer_OpenSim.dll bin
- # patch -p1 < opensim.currency-0.9.x/opensim.patch
+ # patch -p1 < opensim.currency-0.9.x/opensim.patch     (not required for clients)
 
  # ./runprebuild.sh && nant clean && nant
  # cd opensim.currency-0.9.x

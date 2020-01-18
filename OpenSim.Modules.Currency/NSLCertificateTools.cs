@@ -119,7 +119,7 @@ namespace NSL.Certificate.Tools
 		//
 		public bool ValidateServerCertificate(object obj, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
 		{
-			m_log.InfoFormat("[NSL CERT VERIFY]: ValidateServerCertificate: Policy is ({0})", sslPolicyErrors);
+			//m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Policy is ({0})", sslPolicyErrors);
 
 			if (obj is HttpWebRequest) {
 				//
@@ -132,27 +132,27 @@ namespace NSL.Certificate.Tools
 
 			X509Certificate2 certificate2 = new X509Certificate2(certificate);
 			string simplename = certificate2.GetNameInfo(X509NameType.SimpleName, false);
-			m_log.InfoFormat("[NSL CERT VERIFY]: ValidateServerCertificate: Simple Name is \"{0}\"", simplename);
+			//m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Simple Name is \"{0}\"", simplename);
 
 /*
 			// RemoteCertificateNotAvailableはエラーとする．
 			if ((sslPolicyErrors & SslPolicyErrors.RemoteCertificateNotAvailable)==SslPolicyErrors.RemoteCertificateNotAvailable) {
-				m_log.InfoFormat("[NSL CERT VERIFY]: ValidateServerCertificate: Policy Error! {0}", sslPolicyErrors);
+				m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Policy Error! {0}", sslPolicyErrors);
 				return false;
 			}
 */
 			// None, ChainErrors 以外は全てエラーとする．
 			if (sslPolicyErrors!=SslPolicyErrors.None && sslPolicyErrors!=SslPolicyErrors.RemoteCertificateChainErrors) {
-				m_log.InfoFormat("[NSL CERT VERIFY]: ValidateServerCertificate: Policy Error! {0}", sslPolicyErrors);
+				m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Policy Error! {0}", sslPolicyErrors);
 				return false;
 			}
 
 			bool valid = CheckPrivateChain(certificate2);
 			if (valid) {
-				m_log.InfoFormat("[NSL CERT VERIFY]: Valid Server Certification for \"{0}\"", simplename);
+				m_log.InfoFormat("[NSL SERVER CERT VERIFY]: Valid Server Certification for \"{0}\"", simplename);
 			}
 			else {
-				m_log.InfoFormat("[NSL CERT VERIFY]: Failed to Verify Server Certification for \"{0}\"", simplename);
+				m_log.InfoFormat("[NSL SERVER CERT VERIFY]: Failed to Verify Server Certification for \"{0}\"", simplename);
 			}
 			return valid;
 		}
@@ -163,22 +163,22 @@ namespace NSL.Certificate.Tools
 		// obj is SslStream
 		public bool ValidateClientCertificate(object obj, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
 		{
-			m_log.InfoFormat("[NSL CERT VERIFY]: ValidateClientCertificate: Policy is ({0})", sslPolicyErrors);
+			//m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: ValidateClientCertificate: Policy is ({0})", sslPolicyErrors);
 
 			X509Certificate2 certificate2 = new X509Certificate2(certificate);
 			string simplename = certificate2.GetNameInfo(X509NameType.SimpleName, false);
-			//m_log.InfoFormat("[NSL CERT VERIFY]: ValidateClientCertificate: Simple Name is \"{0}\"", simplename);
+			//m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: ValidateClientCertificate: Simple Name is \"{0}\"", simplename);
 
 /*
 			// RemoteCertificateNotAvailableはエラーとする．
 			if ((sslPolicyErrors & SslPolicyErrors.RemoteCertificateNotAvailable)==SslPolicyErrors.RemoteCertificateNotAvailable) {
-				m_log.InfoFormat("[NSL CERT VERIFY]: ValidateClientCertificate: Policy Error! {0}", sslPolicyErrors);
+				m_log.InfoFormat("[NSL CVLIENT CERT VERIFY]: ValidateClientCertificate: Policy Error! {0}", sslPolicyErrors);
 				return false;
 			}
 */
 			// None, ChainErrors 以外は全てエラーとする．
 			if (sslPolicyErrors!=SslPolicyErrors.None && sslPolicyErrors!=SslPolicyErrors.RemoteCertificateChainErrors) {
-				m_log.InfoFormat("[NSL CERT VERIFY]: ValidateClientCertificate: Policy Error! {0}", sslPolicyErrors);
+				m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: ValidateClientCertificate: Policy Error! {0}", sslPolicyErrors);
 				return false;
 			}
 
@@ -187,17 +187,17 @@ namespace NSL.Certificate.Tools
 				Mono.Security.X509.X509Certificate monocert = new Mono.Security.X509.X509Certificate(certificate.GetRawCertData());
 				Mono.Security.X509.X509Crl.X509CrlEntry entry = m_clientcrl.GetCrlEntry(monocert);
 				if (entry!=null) {
-					m_log.InfoFormat("[NSL CERT VERIFY]: Common Name \"{0}\" was revoked at {1}", simplename, entry.RevocationDate.ToString());
+					m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: Common Name \"{0}\" was revoked at {1}", simplename, entry.RevocationDate.ToString());
 					return false;
 				}
 			}
 
 			bool valid = CheckPrivateChain(certificate2);
 			if (valid) {
-				m_log.InfoFormat("[NSL CERT VERIFY]: Valid Client Certification for \"{0}\"", simplename);
+				m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: Valid Client Certification for \"{0}\"", simplename);
  			}
 			else {
-				m_log.InfoFormat("[NSL CERT VERIFY]: Failed to Verify Client Certification for \"{0}\"", simplename);
+				m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: Failed to Verify Client Certification for \"{0}\"", simplename);
 			}
 			return valid;
 		}

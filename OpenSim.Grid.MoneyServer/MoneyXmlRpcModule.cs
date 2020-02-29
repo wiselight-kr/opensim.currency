@@ -539,6 +539,9 @@ namespace OpenSim.Grid.MoneyServer
 			if (requestData.ContainsKey("transactionType")) 	  transactionType = Convert.ToInt32(requestData["transactionType"]);
 			if (requestData.ContainsKey("description")) 		  description = (string)requestData["description"];
 
+			m_log.InfoFormat("[MONEY RPC]: handleTransaction: Transfering money from {0} to {1}, Amount = {2}", senderID, receiverID, amount);
+			m_log.InfoFormat("[MONEY RPC]: handleTransaction: Object ID = {0}, Object Name = {1}", objectID, objectName);
+
 			if (m_sessionDic.ContainsKey(senderID) && m_secureSessionDic.ContainsKey(senderID)) {
 				if (m_sessionDic[senderID]==senderSessionID && m_secureSessionDic[senderID]==senderSecureSessionID) {
 					m_log.InfoFormat("[MONEY RPC]: handleTransaction: Transfering money from {0} to {1}", senderID, receiverID);
@@ -666,7 +669,9 @@ namespace OpenSim.Grid.MoneyServer
 			if (requestData.ContainsKey("transactionType")) transactionType = Convert.ToInt32(requestData["transactionType"]);
 			if (requestData.ContainsKey("description")) 	description = (string)requestData["description"];
 
-			m_log.InfoFormat("[MONEY RPC]: handleForceTransaction: Force transfering money from {0} to {1}", senderID, receiverID);
+			m_log.InfoFormat("[MONEY RPC]: handleForceTransaction: Force transfering money from {0} to {1}, Amount = {2}", senderID, receiverID, amount);
+			m_log.InfoFormat("[MONEY RPC]: handleForceTransaction: Object ID = {0}, Object Name = {1}", objectID, objectName);
+
 			int time = (int)((DateTime.UtcNow.Ticks - TicksToEpoch) / 10000000);
 
 			try {
@@ -1011,6 +1016,13 @@ namespace OpenSim.Grid.MoneyServer
 			if (requestData.ContainsKey("regionUUID")) 		  	  regionUUID = (string)requestData["regionUUID"];
 			if (requestData.ContainsKey("transactionType")) 	  transactionType = Convert.ToInt32(requestData["transactionType"]);
 			if (requestData.ContainsKey("description")) 		  description = (string)requestData["description"];
+
+			if (requestData.ContainsKey("receiverID")) 			  receiverID = (string)requestData["receiverID"];
+			if (requestData.ContainsKey("objectID")) 			  objectID = (string)requestData["objectID"];
+			if (requestData.ContainsKey("objectName")) 			  objectName = (string)requestData["objectName"];
+
+			m_log.InfoFormat("[MONEY RPC]: handlePayMoneyCharge: Transfering money from {0} to {1}, Amount = {2}", senderID, receiverID, amount);
+			m_log.InfoFormat("[MONEY RPC]: handlePayMoneyCharge: Object ID = {0}, Object Name = {1}", objectID, objectName);
 
 			if (m_sessionDic.ContainsKey(senderID) && m_secureSessionDic.ContainsKey(senderID)) {
 				if (m_sessionDic[senderID]==senderSessionID && m_secureSessionDic[senderID]==senderSecureSessionID) {

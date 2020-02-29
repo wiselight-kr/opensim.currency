@@ -332,30 +332,28 @@ namespace OpenSim.Grid.MoneyServer
 				if (avatarClass==(int)AvatarType.UNKNOWN_AVATAR) avatarClass = userInfo.Class;
 				if (String.IsNullOrEmpty(userName)) userName = userInfo.Avatar;
 			}
+            //
 			if (avatarType==(int)AvatarType.UNKNOWN_AVATAR) avatarType = avatarClass;
+			if (String.IsNullOrEmpty(serverURL)) avatarClass = (int)AvatarType.NPC_AVATAR;
 
 			m_log.InfoFormat("[MONEY RPC]: handleClientLogon: Avatar {0} ({1}) is logged on.", userName, clientUUID);
 			m_log.InfoFormat("[MONEY RPC]: handleClientLogon: Avatar Type is {0} and Avatar Class is {1}", avatarType, avatarClass);
 
+			//if (String.IsNullOrEmpty(serverURL)) {
+			//	responseData["description"] = "Server URL is empty. Avatar is a NPC?";
+			//	m_log.InfoFormat("[MONEY RPC]: handleClientLogon: {0}", responseData["description"]);
+			//	return response;
+			//}
+
 			//
 			// Check Avatar
-			if (String.IsNullOrEmpty(serverURL)) {
-				responseData["description"] = "Server URL is empty. Avatar is a NPC?";
-				m_log.InfoFormat("[MONEY RPC]: handleClientLogon: {0}", responseData["description"]);
-				return response;
-			}
-			else if (avatarClass==(int)AvatarType.GUEST_AVATAR && !m_gst_enable) {
+			if (avatarClass==(int)AvatarType.GUEST_AVATAR && !m_gst_enable) {
 				responseData["description"] = "Avatar is a Guest avatar. But this Money Server does not support Guest avatars.";
 				m_log.InfoFormat("[MONEY RPC]: handleClientLogon: {0}", responseData["description"]);
 				return response;
 			}
 			else if (avatarClass==(int)AvatarType.HG_AVATAR && !m_hg_enable) {
 				responseData["description"] = "Avatar is a HG avatar. But this Money Server does not support HG avatars.";
-				m_log.InfoFormat("[MONEY RPC]: handleClientLogon: {0}", responseData["description"]);
-				return response;
-			}
-			else if (avatarClass==(int)AvatarType.NPC_AVATAR) {
-				responseData["description"] = "Avatar is a NPC.";
 				m_log.InfoFormat("[MONEY RPC]: handleClientLogon: {0}", responseData["description"]);
 				return response;
 			}
@@ -366,6 +364,14 @@ namespace OpenSim.Grid.MoneyServer
 			}
 			else if (avatarClass==(int)AvatarType.UNKNOWN_AVATAR) {
 				responseData["description"] = "Avatar is a Unknown avatar.";
+				m_log.InfoFormat("[MONEY RPC]: handleClientLogon: {0}", responseData["description"]);
+				return response;
+			}
+            // NPC
+			else if (avatarClass==(int)AvatarType.NPC_AVATAR) {
+                responseData["success"] = true;
+                responseData["clientBalance"] = 0;
+				responseData["description"] = "Avatar is a NPC.";
 				m_log.InfoFormat("[MONEY RPC]: handleClientLogon: {0}", responseData["description"]);
 				return response;
 			}

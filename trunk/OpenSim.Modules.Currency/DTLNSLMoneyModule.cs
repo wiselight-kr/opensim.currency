@@ -1652,7 +1652,7 @@ namespace OpenSim.Modules.Currency
 				if (avatarType==(int)AvatarType.HG_AVATAR)  avatarClass = m_hg_avatarClass;
 
 				//
-				// Lognn the Money Server.   
+				// Login the Money Server.   
 				Hashtable paramTable = new Hashtable();
 				paramTable["openSimServIP"] 		= scene.RegionInfo.ServerURI.Replace(scene.RegionInfo.InternalEndPoint.Port.ToString(), 
 																						 scene.RegionInfo.HttpPort.ToString());

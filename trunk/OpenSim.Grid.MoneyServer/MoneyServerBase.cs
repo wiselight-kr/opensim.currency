@@ -57,8 +57,8 @@ namespace OpenSim.Grid.MoneyServer
 	{
 		private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-		private string connectionString = string.Empty;
-		private uint m_moneyServerPort = 8008;
+		private string connectionString  = string.Empty;
+		private uint   m_moneyServerPort = 8008;         // 8008 is default server port
 
 		private string m_certFilename	 = "";
 		private string m_certPassword	 = "";
@@ -189,6 +189,7 @@ namespace OpenSim.Grid.MoneyServer
 				// [MoneyServer]
 				m_server_config = moneyConfig.m_config.Configs["MoneyServer"];
 				DEAD_TIME = m_server_config.GetInt("ExpiredTime", DEAD_TIME);
+		        m_moneyServerPort = (uint)m_server_config.GetInt("ServerPort", (int)m_moneyServerPort);
 
 				//
 				// [Certificate]

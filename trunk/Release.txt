@@ -1,4 +1,10 @@
 
-DTL/NSL Money Server v0.9.0   (2018 4/22)
-DTL/NSL Money Server v0.9.1   (2019 11/5)
+DTL/NSL Money Server v0.9.1r01 (2020 4/11)
+    Fix NPC Bug, Variable Port No. of Server
+
+DTL/NSL Money Server v0.9.1    (2019 11/5)
+    Suport of OpenSim v0.9.1
+
+DTL/NSL Money Server v0.9.0    (2018 4/22)
+    Suport of OpenSim v0.9.0
 

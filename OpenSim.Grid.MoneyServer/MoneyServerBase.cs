@@ -37,7 +37,8 @@ using System.Timers;
 //using System.Security.Cryptography;
 //using System.Security.Cryptography.X509Certificates;
 
-using HttpServer;
+//using HttpServer;
+using OpenSim.Framework.Servers.HttpServer;
 using Nini.Config;
 using log4net;
 

@@ -30,9 +30,10 @@ Money Serverを誤魔化すことも不可能ではありません．つまり�
  # cd opensim-0.9.x-source
  # tar xzfv opensim.currency-0.9.x.tar.gz 
 
- # patch -p1 < opensim.currency-0.9.x/opensim.patch   (クライアントの場合は必要なし)
+ # ./runprebuild.sh 
+ # xbuild /target:CLean 
+ # xbui
 
- # ./runprebuild.sh && nant clean && nant
  # cd opensim.currency-0.9.x
  # ./build.sh
 

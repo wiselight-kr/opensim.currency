@@ -24,9 +24,10 @@ Attention)
  # cd opensim-0.9.x-source
  # tar xzfv opensim.currency-0.9.x.tar.gz 
  
- # patch -p1 < opensim.currency-0.9.x/opensim.patch     (not required for clients)
+ # ./runprebuild.sh 
+ # xbuild /target:CLean 
+ # xbuild 
 
- # ./runprebuild.sh && nant clean && nant
  # cd opensim.currency-0.9.x
  # ./build.sh
 

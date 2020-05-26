@@ -941,10 +941,15 @@ namespace OpenSim.Data.MySQL.MySQLMoneyDataWrapper
 						retValue = Convert.ToInt32(dbReader["balance"]);
 					}
 				}
+#pragma warning disable CS0168 // The variable 'e' is declared but never				
+#pragma warning disable CA1031 // Do not catch general exception types
 				catch (Exception e) {
 					m_log.ErrorFormat("[MoneyDB]: MySql failed to fetch balance {0}.", userID);
 					retValue = -2;
 				}
+#pragma warning restore CA1031 // Do not catch general exception types
+#pragma warning restore CS0168 // The variable 'e' is declared but never
+
 				dbReader.Close();
 			}
 			cmd.Dispose();

@@ -18,7 +18,7 @@
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  * DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
  * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
@@ -80,10 +80,14 @@ namespace OpenSim.Grid.MoneyServer
 
 		private string m_sslCommonName      = "";
 
-		private NSLCertificateVerify m_certVerify = new NSLCertificateVerify();		// サーバ認証用
+		/// <summary>
+		/// For server authentication
+		/// </summary>
+		private NSLCertificateVerify m_certVerify = new NSLCertificateVerify();
 
-
-		// Update Balance Messages
+		/// <summary>
+		///  Update Balance Messages
+		/// </summary>
 		private string m_BalanceMessageLandSale 	= "Paid the Money L${0} for Land.";
 		private string m_BalanceMessageRcvLandSale 	= "";
 		private string m_BalanceMessageSendGift 	= "Sent Gift L${0} to {1}.";
@@ -172,16 +176,15 @@ namespace OpenSim.Grid.MoneyServer
 			// [Certificate] Section
 
 			// XML RPC to Region Server (Client Mode)
-			// クライアント証明書
+			// Client certificate
 			m_certFilename = m_cert_config.GetString("ClientCertFilename", m_certFilename);
 			m_certPassword = m_cert_config.GetString("ClientCertPassword", m_certPassword);
 			if (m_certFilename!="") {
 				m_clientCert = new X509Certificate2(m_certFilename, m_certPassword);
-				//m_clientCert = new X509Certificate2(m_certFilename, m_certPassword, X509KeyStorageFlags.MachineKeySet);
 				m_log.Info("[MONEY RPC]: Initialise: Issue Authentication of Client. Cert file is " + m_cacertFilename);
 			}
 
-			// サーバ認証
+			// Server authentication
 			m_checkServerCert = m_cert_config.GetBoolean("CheckServerCert", m_checkServerCert);
 
 			// CA
@@ -230,6 +233,38 @@ namespace OpenSim.Grid.MoneyServer
 			m_httpServer.AddXmlRPCHandler("WebGetBalance", handleWebGetBalance);
 			m_httpServer.AddXmlRPCHandler("WebGetTransaction", handleWebGetTransaction);
 			m_httpServer.AddXmlRPCHandler("WebGetTransactionNum", handleWebGetTransactionNum);
+
+			// Land Buy Test
+			m_httpServer.AddXmlRPCHandler("preflightBuyLandPrep", preflightBuyLandPrep_func);
+			m_httpServer.AddXmlRPCHandler("buyLandPrep", landBuy_func);
+
+			// Currency Buy Test
+			m_httpServer.AddXmlRPCHandler("getCurrencyQuote", quote_func);
+			m_httpServer.AddXmlRPCHandler("buyCurrency", buy_func);
+		}
+
+		private XmlRpcResponse buy_func(XmlRpcRequest request, IPEndPoint client)
+		{
+			m_log.InfoFormat("[MONEY RPC]: handleClient buyCurrency.");
+			throw new NotImplementedException();			
+		}
+
+		private XmlRpcResponse quote_func(XmlRpcRequest request, IPEndPoint client)
+		{
+			m_log.InfoFormat("[MONEY RPC]: handleClient getCurrencyQuote.");
+			throw new NotImplementedException();			
+		}
+
+		private XmlRpcResponse landBuy_func(XmlRpcRequest request, IPEndPoint client)
+		{
+			m_log.InfoFormat("[MONEY RPC]: handleClient buyLandPrep.");
+			throw new NotImplementedException();			
+		}
+
+		private XmlRpcResponse preflightBuyLandPrep_func(XmlRpcRequest request, IPEndPoint client)
+		{
+			m_log.InfoFormat("[MONEY RPC]: handleClient preflightBuyLandPrep.");
+			throw new NotImplementedException();			
 		}
 
 

@@ -19,7 +19,7 @@
 // * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 // * DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
 // * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-// * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+// * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES
 // * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 // * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
@@ -64,7 +64,9 @@ using NSL.Network.XmlRpc;
 
 namespace OpenSim.Modules.Currency
 {
-	//
+	/// <summary>
+	/// Transaction Type
+	/// </summary>
 	public enum TransactionType : int
 	{
 		None             	= 0,
@@ -173,7 +175,7 @@ namespace OpenSim.Modules.Currency
 */
 
 
-	// 
+	 
 	[Extension(Path = "/OpenSim/RegionModules", NodeName = "RegionModule", Id = "DTLNSLMoneyModule")]
 	public class DTLNSLMoneyModule : IMoneyModule, ISharedRegionModule
 	{
@@ -244,7 +246,11 @@ namespace OpenSim.Modules.Currency
 		#endregion
 
 
-		//
+		/// <summary>
+		/// Initialise
+		/// </summary>
+		/// <param name="scene"></param>
+		/// <param name="source"></param>
 		public void Initialise(Scene scene, IConfigSource source)
 		{
 			Initialise(source);
@@ -1774,7 +1780,7 @@ namespace OpenSim.Modules.Currency
 		/// <summary>   
 		/// Generic XMLRPC client abstraction   
 		/// </summary>   
-		/// <param name="ReqParams">Hashtable containing parameters to the method</param>   
+		/// <param name="reqParams">Hashtable containing parameters to the method</param>   
 		/// <param name="method">Method to invoke</param>   
 		/// <returns>Hashtable with success=>bool and other values</returns>   
 		private Hashtable genericCurrencyXMLRPCRequest(Hashtable reqParams, string method)

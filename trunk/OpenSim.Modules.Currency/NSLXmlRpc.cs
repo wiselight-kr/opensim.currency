@@ -12,7 +12,6 @@ using System.Net;
 using System.Text;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
-
 using log4net;
 using Nwc.XmlRpc;
 
@@ -58,8 +57,8 @@ namespace NSL.Network.XmlRpc
 			request.Timeout = timeout;
 			request.UserAgent = "NSLXmlRpcRequest";
 
-			if (myClientCert!=null) request.ClientCertificates.Add(myClientCert);	// 自身の証明書
-			if (!checkServerCert)   request.Headers.Add("NoVerifyCert", "true");	// 相手の証明書を検証しない
+			if (myClientCert!=null) request.ClientCertificates.Add(myClientCert);   // Own certificate
+			if (!checkServerCert)   request.Headers.Add("NoVerifyCert", "true");    // Do not verify the certificate of the other party
 
 			Stream stream = null;
             try { 

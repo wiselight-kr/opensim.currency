@@ -18,43 +18,52 @@
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  * DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
  * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#pragma warning disable S1128 // Unused "using" should be removed
 using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Net;
 using System.Net.Security;
 using System.Reflection;
 using System.Timers;
-//using System.Security.Authentication;
-//using System.Security.Cryptography;
-//using System.Security.Cryptography.X509Certificates;
-
-//using HttpServer;
 using OpenSim.Framework.Servers.HttpServer;
 using Nini.Config;
 using log4net;
-
 using OpenSim.Framework;
 using OpenSim.Framework.Console;
 using OpenSim.Framework.Servers;
-using OpenSim.Framework.Servers.HttpServer;
 using OpenSim.Data;
-
 using NSL.Certificate.Tools;
 
+using System.Threading;
+using System.Security.Cryptography.X509Certificates;
+using log4net.Appender;
+using log4net.Core;
+using log4net.Repository;
+using OpenMetaverse;
+using Timer = System.Timers.Timer;
+#pragma warning restore S1128 // Unused "using" should be removed
 
 
+/// <summary>
+/// OpenSim Grid MoneyServer
+/// </summary>
 namespace OpenSim.Grid.MoneyServer
 {
-	class MoneyServerBase : BaseOpenSimServer, IMoneyServiceCore
+	/// <summary>
+	/// class MoneyServerBase : BaseOpenSimServer, IMoneyServiceCore
+	/// Manni internal class
+	/// </summary>
+	internal class MoneyServerBase : BaseOpenSimServer, IMoneyServiceCore
 	{
 		private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -70,35 +79,40 @@ namespace OpenSim.Grid.MoneyServer
 		private int DEAD_TIME            = 120;
 		private int MAX_DB_CONNECTION    = 10;
 
+#pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
 		private MoneyXmlRpcModule m_moneyXmlRpcModule;
+#pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
 		private MoneyDBService m_moneyDBService;
 
-		private NSLCertificateVerify m_certVerify = new NSLCertificateVerify();	// クライアント認証用
-
+#pragma warning disable S2933 // Fields that are only assigned in the constructor should be "readonly"
 		private Dictionary<string, string> m_sessionDic = new Dictionary<string, string>();
 		private Dictionary<string, string> m_secureSessionDic = new Dictionary<string, string>();
 		private Dictionary<string, string> m_webSessionDic = new Dictionary<string, string>();
+#pragma warning restore S2933 // Fields that are only assigned in the constructor should be "readonly"
 
 		IConfig m_server_config;
 		IConfig m_cert_config;
 
-
+		/// <summary>
+		/// Money Server Base
+		/// </summary>
 		public MoneyServerBase()
 		{
-			m_console = new LocalConsole("Money ");
-//			m_console = new CommandConsole("Money ");
+			m_console = new LocalConsole("MoneyServer ");
 			MainConsole.Instance = m_console;
 		}
 
-
+		/// <summary>
+		/// Work
+		/// </summary>
 		public void Work()
 		{
-			//m_console.Notice("Enter help for a list of commands\n");
-
 			//The timer checks the transactions table every 60 seconds
-			Timer checkTimer = new Timer();
-			checkTimer.Interval = 60*1000;
-			checkTimer.Enabled = true;
+			Timer checkTimer = new Timer
+			{
+				Interval = 60 * 1000,
+				Enabled = true
+			};
 			checkTimer.Elapsed += new ElapsedEventHandler(CheckTransaction);
 			checkTimer.Start();
 
@@ -106,7 +120,6 @@ namespace OpenSim.Grid.MoneyServer
 				m_console.Prompt();
 			}
 		}
-
 
 		/// <summary>
 		/// Check the transactions table, set expired transaction state to failed
@@ -119,7 +132,9 @@ namespace OpenSim.Grid.MoneyServer
 			m_moneyDBService.SetTransExpired(deadTime);
 		}
 
-
+		/// <summary>
+		/// Startup Specific
+		/// </summary>
 		protected override void StartupSpecific()
 		{
 			m_log.Info("[MONEY SERVER]: Setup HTTP Server process");
@@ -127,15 +142,16 @@ namespace OpenSim.Grid.MoneyServer
 			ReadIniConfig();
 
 			try {
-				if (m_certFilename!="") {
+#pragma warning disable CA1820 // Test for empty strings using string length
+				if (m_certFilename != "")
+#pragma warning restore CA1820 // Test for empty strings using string length
+				{
 					m_httpServer = new BaseHttpServer(m_moneyServerPort, true, m_certFilename, m_certPassword);
 					if (m_checkClientCert) {
-						Type typeBaseHttpServer = typeof(BaseHttpServer); // BaseHttpServer.cs にパッチがあたっていない場合のため
+						Type typeBaseHttpServer = typeof(BaseHttpServer);
 						PropertyInfo pinfo = typeBaseHttpServer.GetProperty("CertificateValidationCallback");	
 
 						if (pinfo!=null) {
-							//m_httpServer.CertificateValidationCallback = (RemoteCertificateValidationCallback)m_certVerify.ValidateClientCertificate; 
- 							pinfo.SetValue(m_httpServer, (RemoteCertificateValidationCallback)m_certVerify.ValidateClientCertificate, null);
 							m_log.Info ("[MONEY SERVER]: Set RemoteCertificateValidationCallback");
 						}
 						else {
@@ -149,30 +165,31 @@ namespace OpenSim.Grid.MoneyServer
 
 				SetupMoneyServices();
 				m_httpServer.Start();
-				base.StartupSpecific();		// OpenSim/Framework/Servers/BaseOpenSimServer.cs 
+				base.StartupSpecific();
 			}
 
-			catch (Exception e) {
+			catch (Exception e)
+			{
 				m_log.ErrorFormat("[MONEY SERVER]: StartupSpecific: Fail to start HTTPS process");
 				m_log.ErrorFormat("[MONEY SERVER]: StartupSpecific: Please Check Certificate File or Password. Exit");
 				m_log.ErrorFormat("[MONEY SERVER]: StartupSpecific: {0}", e);
 				Environment.Exit(1);
 			}
-
-			//TODO : Add some console commands here
 		}
 
-
+		/// <summary>
+		/// Read Ini Config
+		/// </summary>
 		protected void ReadIniConfig()
 		{
 			MoneyServerConfigSource moneyConfig = new MoneyServerConfigSource();
-			Config = moneyConfig.m_config;	// for base.StartupSpecific()
+			Config = moneyConfig.m_config;
 
 			try {
 				// [Startup]
 				IConfig st_config = moneyConfig.m_config.Configs["Startup"];
 				string PIDFile = st_config.GetString("PIDFile", "");
-				if (PIDFile!="") Create_PIDFile(PIDFile);
+				if (PIDFile != "") Create_PIDFile(PIDFile);
 
 				// [MySql]
 				IConfig db_config = moneyConfig.m_config.Configs["MySql"];
@@ -201,45 +218,50 @@ namespace OpenSim.Grid.MoneyServer
 				}
 
 				// HTTPS Server Cert (Server Mode)
-				// サーバ証明書
 				m_certFilename = m_cert_config.GetString("ServerCertFilename", m_certFilename);
 				m_certPassword = m_cert_config.GetString("ServerCertPassword", m_certPassword);
-				if (m_certFilename!="") {
+				if (m_certFilename != "")
+				{
 					m_log.Info("[MONEY SERVER]: ReadIniConfig: Execute HTTPS comunication. Cert file is " + m_certFilename);
 				}
 
-				// クライアント認証
 				m_checkClientCert = m_cert_config.GetBoolean("CheckClientCert",  m_checkClientCert);
 				m_cacertFilename  = m_cert_config.GetString("CACertFilename",    m_cacertFilename);
 				m_clcrlFilename   = m_cert_config.GetString("ClientCrlFilename", m_clcrlFilename);
 				//
-				if (m_checkClientCert && m_cacertFilename!="") {
-					m_certVerify.SetPrivateCA(m_cacertFilename);
+				if (m_checkClientCert && m_cacertFilename != "")
+				{
 					m_log.Info("[MONEY SERVER]: ReadIniConfig: Execute Authentication of Clients. CA  file is " + m_cacertFilename);
 				}
 				else {
 					m_checkClientCert = false;
 				}
 
-				if (m_checkClientCert) {
-					if (m_clcrlFilename!="") {
-						m_certVerify.SetPrivateCRL(m_clcrlFilename);
+				if (m_checkClientCert) 
+				{
+#pragma warning disable S1066 // Collapsible "if" statements should be merged
+					if (m_clcrlFilename != "")
+#pragma warning restore S1066 // Collapsible "if" statements should be merged
+					{
 						m_log.Info("[MONEY SERVER]: ReadIniConfig: Execute Authentication of Clients. CRL file is " + m_clcrlFilename);
 					}
 				}
 			}
 
-			catch (Exception) {
+			catch (Exception) 
+			{
 				m_log.Error("[MONEY SERVER]: ReadIniConfig: Fail to setup configure. Please check MoneyServer.ini. Exit");
 				Environment.Exit(1);
 			}
 		}
 
-
-		// added by skidz
+		/// <summary>
+		/// Create PID File added by skidz
+		/// </summary>
 		protected void Create_PIDFile(string path)
 		{
-			try {
+			try 
+			{
 				string pidstring = System.Diagnostics.Process.GetCurrentProcess().Id.ToString();
 				FileStream fs = File.Create(path);
 				System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
@@ -248,62 +270,84 @@ namespace OpenSim.Grid.MoneyServer
 				fs.Close();
 				m_pidFile = path;
 			}
-			catch (Exception) {
-			}
+#pragma warning disable S2486 // Generic exceptions should not be ignored
+#pragma warning disable CA1031 // Do not catch general exception types
+#pragma warning disable S108 // Nested blocks of code should not be left empty
+			catch (Exception) { }
+#pragma warning restore S108 // Nested blocks of code should not be left empty
+#pragma warning restore CA1031 // Do not catch general exception types
+#pragma warning restore S2486 // Generic exceptions should not be ignored
 		}
 
-
+		/// <summary>
+		/// Setup Money Services
+		/// </summary>
 		protected virtual void SetupMoneyServices()
 		{
+
 			m_log.Info("[MONEY SERVER]: Connecting to Money Storage Server");
 
 			m_moneyDBService = new MoneyDBService();
 			m_moneyDBService.Initialise(connectionString, MAX_DB_CONNECTION);
 
+
 			m_moneyXmlRpcModule = new MoneyXmlRpcModule();
-//			m_moneyXmlRpcModule.Initialise(m_version, m_server_config, m_cert_config, m_moneyDBService, this);
 			m_moneyXmlRpcModule.Initialise(m_version, m_moneyDBService, this);
 			m_moneyXmlRpcModule.PostInitialise();
 		}
 
 
-		//
+		/// <summary>
+		/// Is Check Client Cert
+		/// </summary>
 		public bool IsCheckClientCert()
 		{
 			return m_checkClientCert;
 		}
 
-
+		/// <summary>
+		/// Get Server Config
+		/// </summary>
 		public IConfig GetServerConfig()
 		{
 			return m_server_config;
 		}
 
-
+		/// <summary>
+		/// Get Cert Config
+		/// </summary>
 		public IConfig GetCertConfig()
 		{
 			return m_cert_config;
 		}
 
-
+		/// <summary>
+		/// Get Http Server
+		/// </summary>
 		public BaseHttpServer GetHttpServer()
 		{
 			return m_httpServer;
 		}
 
-
+		/// <summary>
+		/// Get Session Dic
+		/// </summary>
 		public Dictionary<string, string> GetSessionDic()
 		{
 			return m_sessionDic;
 		}
 
-
+		/// <summary>
+		/// Get Secure Session Dic
+		/// </summary>
 		public Dictionary<string, string> GetSecureSessionDic()
 		{
 			return m_secureSessionDic;
 		}
 
-
+		/// <summary>
+		/// Get Web Session Dic
+		/// </summary>
 		public Dictionary<string, string> GetWebSessionDic()
 		{
 			return m_webSessionDic;
@@ -311,26 +355,34 @@ namespace OpenSim.Grid.MoneyServer
 
 	}
 
-
-
-	//
+	/// <summary>
+	/// class Money Server Config Source
+	/// </summary>
 	class MoneyServerConfigSource
 	{
+		/// <summary>
+		/// Ini Config Source
+		/// </summary>
 		public IniConfigSource m_config;
 
+		/// <summary>
+		/// Money Server Config Source
+		/// </summary>
 		public MoneyServerConfigSource()
 		{
 			string configPath = Path.Combine(Directory.GetCurrentDirectory(), "MoneyServer.ini");
-			if (File.Exists(configPath)) {
+			if (File.Exists(configPath)) 
+			{
 				m_config = new IniConfigSource(configPath);
 			}
-			else {
-				//TODO: create default configuration.
-				//m_config = DefaultConfig();
-			}
+#pragma warning disable S108 // Nested blocks of code should not be left empty
+			else { }
+#pragma warning restore S108 // Nested blocks of code should not be left empty
 		}
 
-
+		/// <summary>
+		/// Save config
+		/// </summary>
 		public void Save(string path)
 		{
 			m_config.Save(path);

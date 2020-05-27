@@ -84,6 +84,8 @@ namespace OpenSim.Grid.MoneyServer
 #pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
 		private MoneyDBService m_moneyDBService;
 
+private NSLCertificateVerify m_certVerify = new NSLCertificateVerify(); // for Client Certificate
+
 #pragma warning disable S2933 // Fields that are only assigned in the constructor should be "readonly"
 		private Dictionary<string, string> m_sessionDic = new Dictionary<string, string>();
 		private Dictionary<string, string> m_secureSessionDic = new Dictionary<string, string>();
@@ -93,6 +95,7 @@ namespace OpenSim.Grid.MoneyServer
 		IConfig m_server_config;
 		IConfig m_cert_config;
 
+
 		/// <summary>
 		/// Money Server Base
 		/// </summary>
@@ -101,6 +104,7 @@ namespace OpenSim.Grid.MoneyServer
 			m_console = new LocalConsole("MoneyServer ");
 			MainConsole.Instance = m_console;
 		}
+
 
 		/// <summary>
 		/// Work
@@ -121,6 +125,7 @@ namespace OpenSim.Grid.MoneyServer
 			}
 		}
 
+
 		/// <summary>
 		/// Check the transactions table, set expired transaction state to failed
 		/// </summary>
@@ -131,6 +136,7 @@ namespace OpenSim.Grid.MoneyServer
 			int deadTime = unixEpochTime - DEAD_TIME;
 			m_moneyDBService.SetTransExpired(deadTime);
 		}
+
 
 		/// <summary>
 		/// Startup Specific
@@ -152,6 +158,7 @@ namespace OpenSim.Grid.MoneyServer
 						PropertyInfo pinfo = typeBaseHttpServer.GetProperty("CertificateValidationCallback");	
 
 						if (pinfo!=null) {
+pinfo.SetValue(m_httpServer, (RemoteCertificateValidationCallback)m_certVerify.ValidateClientCertificate, null);
 							m_log.Info ("[MONEY SERVER]: Set RemoteCertificateValidationCallback");
 						}
 						else {
@@ -176,6 +183,7 @@ namespace OpenSim.Grid.MoneyServer
 				Environment.Exit(1);
 			}
 		}
+
 
 		/// <summary>
 		/// Read Ini Config
@@ -225,12 +233,14 @@ namespace OpenSim.Grid.MoneyServer
 					m_log.Info("[MONEY SERVER]: ReadIniConfig: Execute HTTPS comunication. Cert file is " + m_certFilename);
 				}
 
+				// Client Certificate
 				m_checkClientCert = m_cert_config.GetBoolean("CheckClientCert",  m_checkClientCert);
 				m_cacertFilename  = m_cert_config.GetString("CACertFilename",    m_cacertFilename);
 				m_clcrlFilename   = m_cert_config.GetString("ClientCrlFilename", m_clcrlFilename);
 				//
 				if (m_checkClientCert && m_cacertFilename != "")
 				{
+m_certVerify.SetPrivateCA(m_cacertFilename);
 					m_log.Info("[MONEY SERVER]: ReadIniConfig: Execute Authentication of Clients. CA  file is " + m_cacertFilename);
 				}
 				else {
@@ -243,6 +253,7 @@ namespace OpenSim.Grid.MoneyServer
 					if (m_clcrlFilename != "")
 #pragma warning restore S1066 // Collapsible "if" statements should be merged
 					{
+m_certVerify.SetPrivateCRL(m_clcrlFilename);
 						m_log.Info("[MONEY SERVER]: ReadIniConfig: Execute Authentication of Clients. CRL file is " + m_clcrlFilename);
 					}
 				}
@@ -254,6 +265,7 @@ namespace OpenSim.Grid.MoneyServer
 				Environment.Exit(1);
 			}
 		}
+
 
 		/// <summary>
 		/// Create PID File added by skidz
@@ -284,12 +296,10 @@ namespace OpenSim.Grid.MoneyServer
 		/// </summary>
 		protected virtual void SetupMoneyServices()
 		{
-
 			m_log.Info("[MONEY SERVER]: Connecting to Money Storage Server");
 
 			m_moneyDBService = new MoneyDBService();
 			m_moneyDBService.Initialise(connectionString, MAX_DB_CONNECTION);
-
 
 			m_moneyXmlRpcModule = new MoneyXmlRpcModule();
 			m_moneyXmlRpcModule.Initialise(m_version, m_moneyDBService, this);
@@ -305,6 +315,7 @@ namespace OpenSim.Grid.MoneyServer
 			return m_checkClientCert;
 		}
 
+
 		/// <summary>
 		/// Get Server Config
 		/// </summary>
@@ -312,6 +323,7 @@ namespace OpenSim.Grid.MoneyServer
 		{
 			return m_server_config;
 		}
+
 
 		/// <summary>
 		/// Get Cert Config
@@ -321,6 +333,7 @@ namespace OpenSim.Grid.MoneyServer
 			return m_cert_config;
 		}
 
+
 		/// <summary>
 		/// Get Http Server
 		/// </summary>
@@ -328,6 +341,7 @@ namespace OpenSim.Grid.MoneyServer
 		{
 			return m_httpServer;
 		}
+
 
 		/// <summary>
 		/// Get Session Dic
@@ -344,6 +358,7 @@ namespace OpenSim.Grid.MoneyServer
 		{
 			return m_secureSessionDic;
 		}
+
 
 		/// <summary>
 		/// Get Web Session Dic
@@ -379,6 +394,7 @@ namespace OpenSim.Grid.MoneyServer
 			else { }
 #pragma warning restore S108 // Nested blocks of code should not be left empty
 		}
+
 
 		/// <summary>
 		/// Save config

@@ -209,7 +209,7 @@ namespace OpenSim.Modules.Currency
 
 		private int    m_hg_avatarClass  = (int)AvatarType.HG_AVATAR;
 
-		private NSLCertificateVerify m_certVerify = new NSLCertificateVerify();	// サーバ認証用
+		private NSLCertificateVerify m_certVerify = new NSLCertificateVerify();	// For server authentication
 
 
 		/// <summary>   
@@ -287,7 +287,7 @@ namespace OpenSim.Modules.Currency
 				m_sellEnabled  = economyConfig.GetBoolean("SellEnabled", m_sellEnabled);
 				m_moneyServURL = economyConfig.GetString("CurrencyServer", m_moneyServURL);
 
-				// クライアント証明書
+				// client certification
 				m_certFilename = economyConfig.GetString("ClientCertFilename", m_certFilename);
 				m_certPassword = economyConfig.GetString("ClientCertPassword", m_certPassword);
 				if (m_certFilename!="") {
@@ -296,7 +296,7 @@ namespace OpenSim.Modules.Currency
 					m_log.InfoFormat("[MONEY]: Issue Authentication of Client. Cert File is " + m_certFilename);
 				}
 
-				// サーバ認証
+				// For server authentication
 				m_checkServerCert = economyConfig.GetBoolean("CheckServerCert", m_checkServerCert);
 				m_cacertFilename  = economyConfig.GetString("CACertFilename",   m_cacertFilename);
 				if (m_cacertFilename!="") {

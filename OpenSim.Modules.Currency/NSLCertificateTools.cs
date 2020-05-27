@@ -74,12 +74,11 @@ SetPrivateCRL(crlfile);
 	  	{
 			try {
 				m_cacert = new X509Certificate2(certfile);
-                m_log.ErrorFormat("[SET PRIVATE CA ]: Read CA File: [{0}].", certfile);
 			}
 			catch (Exception ex)
 			{
 				m_cacert = null;
-				m_log.ErrorFormat("[SET PRIVATE CA ]: CA File reading error [{0}]. {1}", certfile, ex);
+				m_log.ErrorFormat("[SET PRIVATE CA]: CA File reading error [{0}]. {1}", certfile, ex);
 			}
 
 			if (m_cacert!=null) {
@@ -96,7 +95,6 @@ SetPrivateCRL(crlfile);
         {
             try {
                 m_clientcrl = Mono.Security.X509.X509Crl.CreateFromFile(crlfile);
-                m_log.ErrorFormat("[SET PRIVATE CRL]: Read CRL File: [{0}].", crlfile);
             }
             catch (Exception ex)
             {
@@ -149,6 +147,8 @@ SetPrivateCRL(crlfile);
 		/// <returns></returns>
 		public bool ValidateServerCertificate(object obj, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
 		{
+			m_log.ErrorFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Start");
+
 			if (obj is HttpWebRequest) 
 			{
 				HttpWebRequest Request = (HttpWebRequest)obj;
@@ -164,7 +164,7 @@ SetPrivateCRL(crlfile);
 
 			// None, ChainErrors Error except for．
 			if (sslPolicyErrors!=SslPolicyErrors.None && sslPolicyErrors!=SslPolicyErrors.RemoteCertificateChainErrors) {
-				m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Policy Error! {0}", sslPolicyErrors);
+				m_log.ErrorFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Policy Error! {0}", sslPolicyErrors);
 				return false;
 			}
 
@@ -189,11 +189,11 @@ SetPrivateCRL(crlfile);
 		/// <returns></returns>
 		public bool ValidateClientCertificate(object obj, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
 		{
-			//m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: ValidateClientCertificate: Policy is ({0})", sslPolicyErrors);
+			m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: ValidateClientCertificate: Start");
 
 			X509Certificate2 certificate2 = new X509Certificate2(certificate);
 			string simplename = certificate2.GetNameInfo(X509NameType.SimpleName, false);
-			//m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: ValidateClientCertificate: Simple Name is \"{0}\"", simplename);
+			m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: ValidateClientCertificate: Simple Name is \"{0}\"", simplename);
 
 			// None, ChainErrors 以外は全てエラーとする．
 			if (sslPolicyErrors!=SslPolicyErrors.None && sslPolicyErrors!=SslPolicyErrors.RemoteCertificateChainErrors) {

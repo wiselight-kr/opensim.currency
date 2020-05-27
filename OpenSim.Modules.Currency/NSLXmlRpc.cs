@@ -57,16 +57,17 @@ namespace NSL.Network.XmlRpc
 			request.Timeout = timeout;
 			request.UserAgent = "NSLXmlRpcRequest";
 
-			if (myClientCert!=null) request.ClientCertificates.Add(myClientCert);   // Own certificate
+			if (myClientCert!=null) {
+request.ClientCertificates.Add(myClientCert);   // Own certificate
+m_log.ErrorFormat("[MONEY NSL RPC]: 111111111111111111111111111");
+}
 			if (!checkServerCert)   request.Headers.Add("NoVerifyCert", "true");    // Do not verify the certificate of the other party
 
 			Stream stream = null;
             try { 
 				stream = request.GetRequestStream();
 			}
-#pragma warning disable CS0168 // Variable ist deklariert, wird jedoch niemals verwendet
 			catch (Exception ex) {
-#pragma warning restore CS0168 // Variable ist deklariert, wird jedoch niemals verwendet
 				m_log.ErrorFormat("[MONEY NSL RPC]: GetRequestStream Error: {0}", ex);
 			    stream = null;
 			}

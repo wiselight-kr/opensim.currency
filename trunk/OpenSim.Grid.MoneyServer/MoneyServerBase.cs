@@ -148,22 +148,24 @@ private NSLCertificateVerify m_certVerify = new NSLCertificateVerify(); // for C
 			ReadIniConfig();
 
 			try {
-#pragma warning disable CA1820 // Test for empty strings using string length
-				if (m_certFilename != "")
-#pragma warning restore CA1820 // Test for empty strings using string length
-				{
+				if (m_certFilename != "") {
 					m_httpServer = new BaseHttpServer(m_moneyServerPort, true, m_certFilename, m_certPassword);
 					if (m_checkClientCert) {
+						m_httpServer.CertificateValidationCallback = (RemoteCertificateValidationCallback)m_certVerify.ValidateClientCertificate;
+						m_log.Info("[MONEY SERVER]: Set RemoteCertificateValidationCallback");
+
+/*
 						Type typeBaseHttpServer = typeof(BaseHttpServer);
 						PropertyInfo pinfo = typeBaseHttpServer.GetProperty("CertificateValidationCallback");	
 
 						if (pinfo!=null) {
-pinfo.SetValue(m_httpServer, (RemoteCertificateValidationCallback)m_certVerify.ValidateClientCertificate, null);
+                            pinfo.SetValue(m_httpServer, (RemoteCertificateValidationCallback)m_certVerify.ValidateClientCertificate, null);
 							m_log.Info ("[MONEY SERVER]: Set RemoteCertificateValidationCallback");
 						}
 						else {
 							m_log.Error("[MONEY SERVER]: StartupSpecific: CheckClientCert is true. But this MoneyServer does not support CheckClientCert!!");
 						}
+*/
 					}
 				}
 				else {

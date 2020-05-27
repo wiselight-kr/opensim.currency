@@ -32,6 +32,7 @@ namespace NSL.Certificate.Tools
 
 		private Mono.Security.X509.X509Crl m_clientcrl  = null;
 
+
 		/// <summary>
 		/// NSL Certificate Verify
 		/// </summary>
@@ -42,6 +43,7 @@ namespace NSL.Certificate.Tools
 			m_clientcrl = null;
 		}
 
+
 		/// <summary>
 		/// NSL Certificate Verify
 		/// </summary>
@@ -51,6 +53,7 @@ namespace NSL.Certificate.Tools
 			SetPrivateCA(certfile);
 		}
 
+
 		/// <summary>
 		/// NSL Certificate Verify
 		/// </summary>
@@ -59,7 +62,9 @@ namespace NSL.Certificate.Tools
 		public NSLCertificateVerify(string certfile, string crlfile)
 		{
 			SetPrivateCA (certfile);
+SetPrivateCRL(crlfile);
 		}
+
 
 		/// <summary>
 		/// Set Private CA
@@ -84,6 +89,21 @@ namespace NSL.Certificate.Tools
 			}
 	  	}
 
+
+        //
+        public void SetPrivateCRL(string crlfile)
+        {
+            try {
+                m_clientcrl = Mono.Security.X509.X509Crl.CreateFromFile(crlfile);
+            }
+            catch (Exception ex)
+            {
+                m_clientcrl = null;
+                m_log.ErrorFormat("[SET PRIVATE CRL]: CRL File reading error [{0}]. {1}", crlfile, ex);
+            }
+        }
+
+
 		/// <summary>
 		/// Check Private Chain
 		/// </summary>
@@ -107,6 +127,15 @@ namespace NSL.Certificate.Tools
 			//
 			return false;
 		}
+
+
+        /*
+        SslPolicyErrors:
+            RemoteCertificateNotAvailable = 1, // 証明書が利用できません．
+            RemoteCertificateNameMismatch = 2, // 証明書名が不一致です．
+            RemoteCertificateChainErrors  = 4, // ChainStatus が空でない配列を返しました．
+        */
+
 
 		/// <summary>
 		/// Validate Server Certificate
@@ -158,8 +187,11 @@ namespace NSL.Certificate.Tools
 		/// <returns></returns>
 		public bool ValidateClientCertificate(object obj, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
 		{
+			//m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: ValidateClientCertificate: Policy is ({0})", sslPolicyErrors);
+
 			X509Certificate2 certificate2 = new X509Certificate2(certificate);
 			string simplename = certificate2.GetNameInfo(X509NameType.SimpleName, false);
+			//m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: ValidateClientCertificate: Simple Name is \"{0}\"", simplename);
 
 			// None, ChainErrors 以外は全てエラーとする．
 			if (sslPolicyErrors!=SslPolicyErrors.None && sslPolicyErrors!=SslPolicyErrors.RemoteCertificateChainErrors) {
@@ -194,7 +226,6 @@ namespace NSL.Certificate.Tools
 	/// </summary>
 	public class NSLCertificatePolicy : ICertificatePolicy
 	{
-
 		/// <summary>
 		/// Check Validation Result
 		/// </summary>

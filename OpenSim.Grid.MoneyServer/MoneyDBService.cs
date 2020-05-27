@@ -45,7 +45,7 @@ namespace OpenSim.Grid.MoneyServer
 		private long TicksToEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks;
 
         // DB manager pool
-        protected Dictionary<int, MySQLSuperManager> m_dbconnections = new Dictionary<int, MySQLSuperManager>();	// Lock付
+        protected Dictionary<int, MySQLSuperManager> m_dbconnections = new Dictionary<int, MySQLSuperManager>();	// with Lock
         private int m_maxConnections;
 
         public int m_lastConnect = 0;
@@ -433,7 +433,7 @@ namespace OpenSim.Grid.MoneyServer
                         if (giveMoney(transactionUUID, transaction.Receiver, transaction.Amount)) {
 							do_trans = true;
 						}
-						else {	// give money to receiver failed. 返金処理
+						else {	// give money to receiver failed. Refund Processing
                             m_log.ErrorFormat("[MONEY DB]: Give money to receiver {0} failed", transaction.Receiver);
                             //Return money to sender
                             if (giveMoney(transactionUUID, transaction.Sender, transaction.Amount)) {

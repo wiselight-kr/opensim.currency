@@ -243,11 +243,13 @@ namespace OpenSim.Grid.MoneyServer
 			m_httpServer.AddXmlRPCHandler("buyCurrency", buy_func);
 		}
 
+
 		private XmlRpcResponse buy_func(XmlRpcRequest request, IPEndPoint client)
 		{
 			m_log.InfoFormat("[MONEY RPC]: handleClient buyCurrency.");
 			throw new NotImplementedException();			
 		}
+
 
 		private XmlRpcResponse quote_func(XmlRpcRequest request, IPEndPoint client)
 		{
@@ -255,11 +257,13 @@ namespace OpenSim.Grid.MoneyServer
 			throw new NotImplementedException();			
 		}
 
+
 		private XmlRpcResponse landBuy_func(XmlRpcRequest request, IPEndPoint client)
 		{
 			m_log.InfoFormat("[MONEY RPC]: handleClient buyLandPrep.");
 			throw new NotImplementedException();			
 		}
+
 
 		private XmlRpcResponse preflightBuyLandPrep_func(XmlRpcRequest request, IPEndPoint client)
 		{

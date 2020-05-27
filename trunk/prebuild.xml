@@ -32,7 +32,7 @@
       </Options>
     </Configuration>
 
-    <Project frameworkVersion="v4_0" name="OpenSim.Data.MySQL.MySQLMoneyDataWrapper" path="OpenSim.Data.MySQL.MySQLMoneyDataWrapper" type="Library">
+    <Project frameworkVersion="v4_6" name="OpenSim.Data.MySQL.MySQLMoneyDataWrapper" path="OpenSim.Data.MySQL.MySQLMoneyDataWrapper" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../bin/</OutputPath>
@@ -71,7 +71,7 @@
     </Project>
 
 
-    <Project frameworkVersion="v4_0" name="OpenSim.Modules.Currency" path="OpenSim.Modules.Currency" type="Library">
+    <Project frameworkVersion="v4_6" name="OpenSim.Modules.Currency" path="OpenSim.Modules.Currency" type="Library">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../bin/</OutputPath>
@@ -95,7 +95,6 @@
       <Reference name="Mono.Addins.dll" path="../../bin/"/>
       <Reference name="OpenMetaverseTypes.dll" path="../../bin/"/>
       <Reference name="OpenMetaverse.dll" path="../../bin/"/>
-      <Reference name="HttpServer_OpenSim.dll" path="../../bin/"/>
       <Reference name="OpenSim.Region.Framework" path="../../bin/"/>
       <Reference name="OpenSim.Framework" path="../../bin/"/>
       <Reference name="OpenSim.Framework.Console" path="../../bin/"/>
@@ -111,7 +110,7 @@
     </Project>
 
 
-    <Project frameworkVersion="v4_0" name="MoneyServer" path="OpenSim.Grid.MoneyServer" type="Exe">
+    <Project frameworkVersion="v4_6" name="MoneyServer" path="OpenSim.Grid.MoneyServer" type="Exe">
       <Configuration name="Debug">
         <Options>
           <OutputPath>../bin/</OutputPath>
@@ -137,7 +136,6 @@
       <Reference name="Mono.Addins.dll" path="../../bin/"/>
       <Reference name="OpenMetaverseTypes.dll" path="../../bin/"/>
       <Reference name="OpenMetaverse.dll" path="../../bin/"/>
-      <Reference name="HttpServer_OpenSim.dll" path="../../bin"/>
       <Reference name="OpenSim.Region.Framework" path="../../bin/"/>
       <Reference name="OpenSim.Framework" path="../../bin/"/>
       <Reference name="OpenSim.Framework.Console" path="../../bin/"/>

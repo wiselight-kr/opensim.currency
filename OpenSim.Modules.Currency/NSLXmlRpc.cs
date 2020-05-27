@@ -67,7 +67,7 @@ namespace NSL.Network.XmlRpc
 #pragma warning disable CS0168 // Variable ist deklariert, wird jedoch niemals verwendet
 			catch (Exception ex) {
 #pragma warning restore CS0168 // Variable ist deklariert, wird jedoch niemals verwendet
-				//m_log.ErrorFormat("[MONEY NSL RPC]: GetRequestStream Error: {0}", ex);
+				m_log.ErrorFormat("[MONEY NSL RPC]: GetRequestStream Error: {0}", ex);
 			    stream = null;
 			}
 			if (stream==null) return null;

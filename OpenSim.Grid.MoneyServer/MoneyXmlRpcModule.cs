@@ -184,7 +184,7 @@ namespace OpenSim.Grid.MoneyServer
 				m_log.Info("[MONEY RPC]: Initialise: Issue Authentication of Client. Cert file is " + m_cacertFilename);
 			}
 
-			// Server authentication
+			// Server Authentication
 			m_checkServerCert = m_cert_config.GetBoolean("CheckServerCert", m_checkServerCert);
 
 			// CA

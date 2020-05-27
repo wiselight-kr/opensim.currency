@@ -1786,7 +1786,7 @@ namespace OpenSim.Modules.Currency
 		/// <returns>Hashtable with success=>bool and other values</returns>   
 		private Hashtable genericCurrencyXMLRPCRequest(Hashtable reqParams, string method)
 		{
-			//m_log.InfoFormat("[MONEY]: genericCurrencyXMLRPCRequest:");
+			m_log.InfoFormat("[MONEY]: genericCurrencyXMLRPCRequest:");
 
 			if (reqParams.Count<=0 || string.IsNullOrEmpty(method)) return null;
 

@@ -147,14 +147,13 @@ SetPrivateCRL(crlfile);
 		/// <returns></returns>
 		public bool ValidateServerCertificate(object obj, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
 		{
-			m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Start");
+			m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Start.");
 
-			if (obj is HttpWebRequest) 
-			{
+			if (obj is HttpWebRequest) {
 				HttpWebRequest Request = (HttpWebRequest)obj;
 				string noVerify = Request.Headers.Get("NoVerifyCert");
-				if (noVerify!=null && noVerify.ToLower()=="true") 
-				{
+				if (noVerify!=null && noVerify.ToLower()=="true") {
+					m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: No Verify Certificate.");
 					return true;
 				}
 			}
@@ -170,10 +169,10 @@ SetPrivateCRL(crlfile);
 
 			bool valid = CheckPrivateChain(certificate2);
 			if (valid) {
-				m_log.InfoFormat("[NSL SERVER CERT VERIFY]: Valid Server Certification for \"{0}\"", simplename);
+				m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Valid Server Certification for \"{0}\"", simplename);
 			}
 			else {
-				m_log.InfoFormat("[NSL SERVER CERT VERIFY]: Failed to Verify Server Certification for \"{0}\"", simplename);
+				m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Failed to Verify Server Certification for \"{0}\"", simplename);
 			}
 			return valid;
 		}

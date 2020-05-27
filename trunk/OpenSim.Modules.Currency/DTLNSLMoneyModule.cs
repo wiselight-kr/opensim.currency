@@ -299,15 +299,17 @@ namespace OpenSim.Modules.Currency
 				// Server Authentication
 				m_checkServerCert = economyConfig.GetBoolean("CheckServerCert", m_checkServerCert);
 				m_cacertFilename  = economyConfig.GetString("CACertFilename",   m_cacertFilename);
-				if (m_cacertFilename!="") {
-					m_certVerify.SetPrivateCA(m_cacertFilename);
-					m_log.InfoFormat("[MONEY]: Initialise: Execute Authentication of Server. CA Cert File is " + m_cacertFilename);
+            	if (m_checkServerCert) {
+                	if (m_cacertFilename!="") {
+						m_certVerify.SetPrivateCA(m_cacertFilename);
+						ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
+						m_log.InfoFormat("[MONEY]: Initialise: Execute Authentication of Server. CA Cert File is " + m_cacertFilename);
+                	}
+                	else {
+						m_log.Info("[MONEY]: Initialise: CACertFilename is empty. Therefor, CheckServerCert is forced to false");
+						m_checkServerCert = false;
+					}
 				}
-				else {
-					if (m_checkServerCert) m_log.Info("[MONEY]: Initialise: CACertFilename is empty. Therefor, CheckServerCert is forced to false");
-					m_checkServerCert = false;
-				}
-				ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
 
 				// Settlement
 				m_use_web_settle = economyConfig.GetBoolean("SettlementByWeb",   m_use_web_settle);

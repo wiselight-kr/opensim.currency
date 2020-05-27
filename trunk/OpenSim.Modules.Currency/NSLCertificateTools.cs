@@ -147,7 +147,7 @@ SetPrivateCRL(crlfile);
 		/// <returns></returns>
 		public bool ValidateServerCertificate(object obj, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
 		{
-			m_log.ErrorFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Start");
+			m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Start");
 
 			if (obj is HttpWebRequest) 
 			{

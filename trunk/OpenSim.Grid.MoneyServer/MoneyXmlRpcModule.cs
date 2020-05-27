@@ -176,31 +176,27 @@ namespace OpenSim.Grid.MoneyServer
 			// [Certificate] Section
 
 			// XML RPC to Region Server (Client Mode)
-			// Client certificate
+			// Client Certificate
 			m_certFilename = m_cert_config.GetString("ClientCertFilename", m_certFilename);
 			m_certPassword = m_cert_config.GetString("ClientCertPassword", m_certPassword);
 			if (m_certFilename!="") {
 				m_clientCert = new X509Certificate2(m_certFilename, m_certPassword);
-				m_log.Info("[MONEY RPC]: Initialise: Issue Authentication of Client. Cert file is " + m_cacertFilename);
+				m_log.Info("[MONEY RPC]: Initialise: Issue Authentication of Client. Cert file is " + m_certFilename);
 			}
 
 			// Server Authentication
 			m_checkServerCert = m_cert_config.GetBoolean("CheckServerCert", m_checkServerCert);
+			m_cacertFilename  = m_cert_config.GetString("CACertFilename", m_cacertFilename);
 
-			// CA
-			m_cacertFilename = m_cert_config.GetString("CACertFilename", m_cacertFilename);
-			ServicePointManager.ServerCertificateValidationCallback = null;
-			if (m_checkServerCert) {
-				if (m_cacertFilename!="") {
-					m_certVerify.SetPrivateCA(m_cacertFilename);
-					ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
-					m_log.Info("[MONEY RPC]: Initialise: Execute Authentication of Server. CA file is " + m_cacertFilename);
-				}
-				else {
-					m_checkServerCert = false;
-					m_log.Info("[MONEY RPC]: Initialise: CACertFilename is empty. Therefor, CheckServerCert is forced to false");
-				}
+			if (m_cacertFilename!="") {
+				m_certVerify.SetPrivateCA(m_cacertFilename);
+				m_log.Info("[MONEY RPC]: Initialise: Execute Authentication of Server. CA file is " + m_cacertFilename);
 			}
+			else {
+				m_checkServerCert = false;
+				m_log.Info("[MONEY RPC]: Initialise: CACertFilename is empty. Therefor, CheckServerCert is forced to false");
+			}
+			ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
 
 			m_sessionDic = m_moneyCore.GetSessionDic();
 			m_secureSessionDic = m_moneyCore.GetSecureSessionDic();

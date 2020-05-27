@@ -306,7 +306,7 @@ namespace OpenSim.Grid.MoneyServer
 		/// <returns></returns>
 		public XmlRpcResponse handleClientLogin(XmlRpcRequest request, IPEndPoint remoteClient)
 		{
-			//m_log.InfoFormat("[MONEY RPC]: handleClientLogin:");
+			m_log.InfoFormat("[MONEY RPC]: handleClientLogin:");
 
 			GetSSLCommonName(request);
 

@@ -277,37 +277,37 @@ namespace OpenSim.Modules.Currency
 
 				if (economyConfig.GetString("EconomyModule")!=Name) {
 					//m_enabled = false;
-					m_log.InfoFormat("[MONEY]: The DTL/NSL MoneyModule is disabled");
+					m_log.InfoFormat("[MONEY]: Initialise: The DTL/NSL MoneyModule is disabled");
 					return;
 				}
 				else {
-					m_log.InfoFormat("[MONEY]: The DTL/NSL MoneyModule is enabled");
+					m_log.InfoFormat("[MONEY]: Initialise: The DTL/NSL MoneyModule is enabled");
 				}
 
 				m_sellEnabled  = economyConfig.GetBoolean("SellEnabled", m_sellEnabled);
 				m_moneyServURL = economyConfig.GetString("CurrencyServer", m_moneyServURL);
 
-				// client certification
+				// Client Certification
 				m_certFilename = economyConfig.GetString("ClientCertFilename", m_certFilename);
 				m_certPassword = economyConfig.GetString("ClientCertPassword", m_certPassword);
 				if (m_certFilename!="") {
 					m_cert = new X509Certificate2(m_certFilename, m_certPassword);
 					//m_cert = new X509Certificate2(m_certFilename, m_certPassword, X509KeyStorageFlags.MachineKeySet);
-					m_log.InfoFormat("[MONEY]: Issue Authentication of Client. Cert File is " + m_certFilename);
+					m_log.InfoFormat("[MONEY]: Initialise: Issue Authentication of Client. Cert File is " + m_certFilename);
 				}
 
-				// For server authentication
+				// Server Authentication
 				m_checkServerCert = economyConfig.GetBoolean("CheckServerCert", m_checkServerCert);
 				m_cacertFilename  = economyConfig.GetString("CACertFilename",   m_cacertFilename);
 				if (m_cacertFilename!="") {
 					m_certVerify.SetPrivateCA(m_cacertFilename);
-					m_log.InfoFormat("[MONEY]: Execute Authentication of Server. CA Cert File is " + m_cacertFilename);
+					m_log.InfoFormat("[MONEY]: Initialise: Execute Authentication of Server. CA Cert File is " + m_cacertFilename);
 				}
 				else {
+					if (m_checkServerCert) m_log.Info("[MONEY]: Initialise: CACertFilename is empty. Therefor, CheckServerCert is forced to false");
 					m_checkServerCert = false;
 				}
 				ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
-
 
 				// Settlement
 				m_use_web_settle = economyConfig.GetBoolean("SettlementByWeb",   m_use_web_settle);

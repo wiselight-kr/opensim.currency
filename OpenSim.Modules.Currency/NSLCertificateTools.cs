@@ -74,11 +74,12 @@ SetPrivateCRL(crlfile);
 	  	{
 			try {
 				m_cacert = new X509Certificate2(certfile);
+                m_log.ErrorFormat("[SET PRIVATE CA ]: Read CA File: [{0}].", certfile);
 			}
 			catch (Exception ex)
 			{
 				m_cacert = null;
-				m_log.ErrorFormat("[SET PRIVATE CA]: CA File reading error [{0}]. {1}", certfile, ex);
+				m_log.ErrorFormat("[SET PRIVATE CA ]: CA File reading error [{0}]. {1}", certfile, ex);
 			}
 
 			if (m_cacert!=null) {
@@ -95,6 +96,7 @@ SetPrivateCRL(crlfile);
         {
             try {
                 m_clientcrl = Mono.Security.X509.X509Crl.CreateFromFile(crlfile);
+                m_log.ErrorFormat("[SET PRIVATE CRL]: Read CRL File: [{0}].", crlfile);
             }
             catch (Exception ex)
             {

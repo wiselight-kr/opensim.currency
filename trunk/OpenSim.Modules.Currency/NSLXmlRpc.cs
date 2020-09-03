@@ -57,10 +57,7 @@ namespace NSL.Network.XmlRpc
 			request.Timeout = timeout;
 			request.UserAgent = "NSLXmlRpcRequest";
 
-			if (myClientCert!=null) {
-request.ClientCertificates.Add(myClientCert);   // Own certificate
-m_log.ErrorFormat("[MONEY NSL RPC]: 111111111111111111111111111");
-}
+            if (myClientCert!=null) request.ClientCertificates.Add(myClientCert);   // Own certificate
 			if (!checkServerCert)   request.Headers.Add("NoVerifyCert", "true");    // Do not verify the certificate of the other party
 
 			Stream stream = null;

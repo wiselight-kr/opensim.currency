@@ -156,8 +156,8 @@ namespace NSL.Certificate.Tools
             }
 
             X509Certificate2 certificate2 = new X509Certificate2(certificate);
-            string simplename = certificate2.GetNameInfo(X509NameType.SimpleName, false);
-            //m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Simple Name is \"{0}\"", simplename);
+            string commonname = certificate2.GetNameInfo(X509NameType.SimpleName, false);
+            m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Common Name is \"{0}\"", commonname);
 
 /*
             // RemoteCertificateNotAvailableはエラーとする．
@@ -174,10 +174,10 @@ namespace NSL.Certificate.Tools
 
             bool valid = CheckPrivateChain(certificate2);
             if (valid) {
-                m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Valid Server Certification for \"{0}\"", simplename);
+                m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Valid Server Certification for \"{0}\"", commonname);
             }
             else {
-                m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Failed to Verify Server Certification for \"{0}\"", simplename);
+                m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Failed to Verify Server Certification for \"{0}\"", commonname);
             }
             return valid;
         }
@@ -196,8 +196,8 @@ namespace NSL.Certificate.Tools
             m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: ValidateClientCertificate: Start");
 
             X509Certificate2 certificate2 = new X509Certificate2(certificate);
-            string simplename = certificate2.GetNameInfo(X509NameType.SimpleName, false);
-            m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: ValidateClientCertificate: Simple Name is \"{0}\"", simplename);
+            string commonname = certificate2.GetNameInfo(X509NameType.SimpleName, false);
+            m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: ValidateClientCertificate: Common Name is \"{0}\"", commonname);
 
             // None, ChainErrors 以外は全てエラーとする．
             if (sslPolicyErrors!=SslPolicyErrors.None && sslPolicyErrors!=SslPolicyErrors.RemoteCertificateChainErrors) {
@@ -210,17 +210,17 @@ namespace NSL.Certificate.Tools
                 Mono.Security.X509.X509Certificate monocert = new Mono.Security.X509.X509Certificate(certificate.GetRawCertData());
                 Mono.Security.X509.X509Crl.X509CrlEntry entry = m_clientcrl.GetCrlEntry(monocert);
                 if (entry!=null) {
-                    m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: Common Name \"{0}\" was revoked at {1}", simplename, entry.RevocationDate.ToString());
+                    m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: Common Name \"{0}\" was revoked at {1}", commonname, entry.RevocationDate.ToString());
                     return false;
                 }
             }
 
             bool valid = CheckPrivateChain(certificate2);
             if (valid) {
-                m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: Valid Client Certification for \"{0}\"", simplename);
+                m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: Valid Client Certification for \"{0}\"", commonname);
             }
             else {
-                m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: Failed to Verify Client Certification for \"{0}\"", simplename);
+                m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: Failed to Verify Client Certification for \"{0}\"", commonname);
             }
             return valid;
         }

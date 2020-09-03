@@ -1,0 +1,17 @@
+diff -Nur OpenSim-/Framework/Servers/HttpServer/OSHttpServer/HttpClientContext.cs OpenSim/Framework/Servers/HttpServer/OSHttpServer/HttpClientContext.cs
+--- OpenSim-/Framework/Servers/HttpServer/OSHttpServer/HttpClientContext.cs	2020-09-01 22:37:02.330024299 +0900
++++ OpenSim/Framework/Servers/HttpServer/OSHttpServer/HttpClientContext.cs	2020-09-04 11:42:17.653235008 +0900
+@@ -133,8 +133,12 @@
+                 if (_cert1 != null)
+                 {
+                     X509Certificate2 _cert2 = new X509Certificate2(_cert1);
+-                    if (_cert2 != null)
++                    if (_cert2.Vrify()) {
+                         SSLCommonName = _cert2.GetNameInfo(X509NameType.SimpleName, false);
++                    }
++                    else {
++                        SSLCommonName = "unknownName";
++                    }
+                 }
+             }
+ 

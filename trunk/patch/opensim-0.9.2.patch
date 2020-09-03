@@ -6,7 +6,7 @@ diff -Nur OpenSim-/Framework/Servers/HttpServer/OSHttpServer/HttpClientContext.c
                  {
                      X509Certificate2 _cert2 = new X509Certificate2(_cert1);
 -                    if (_cert2 != null)
-+                    if (_cert2.Vrify()) {
++                    if (_cert2.Verify()) {
                          SSLCommonName = _cert2.GetNameInfo(X509NameType.SimpleName, false);
 +                    }
 +                    else {

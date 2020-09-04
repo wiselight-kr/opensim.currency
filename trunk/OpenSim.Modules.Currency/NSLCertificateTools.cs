@@ -135,7 +135,7 @@ namespace NSL.Certificate.Tools
 
 
         /// <summary>
-        /// Validate Server Certificate
+        /// Validate Server Certificate Callback Function
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="certificate"></param>
@@ -159,13 +159,14 @@ namespace NSL.Certificate.Tools
             string commonname = certificate2.GetNameInfo(X509NameType.SimpleName, false);
             m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Common Name is \"{0}\"", commonname);
 
-/*
+            /*
             // RemoteCertificateNotAvailableはエラーとする．
             if ((sslPolicyErrors & SslPolicyErrors.RemoteCertificateNotAvailable)==SslPolicyErrors.RemoteCertificateNotAvailable) {
                 m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Policy Error! {0}", sslPolicyErrors);
                 return false;
             }
-*/
+            */
+
             // None, ChainErrors Error except for． // None, ChainErrors 以外は全てエラーとする．
             if (sslPolicyErrors!=SslPolicyErrors.None && sslPolicyErrors!=SslPolicyErrors.RemoteCertificateChainErrors) {
                 m_log.ErrorFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Policy Error! {0}", sslPolicyErrors);
@@ -184,7 +185,7 @@ namespace NSL.Certificate.Tools
 
 
         /// <summary>
-        /// Validate Client Certificate
+        /// Validate Client Certificate Callback Function
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="certificate"></param>
@@ -193,7 +194,12 @@ namespace NSL.Certificate.Tools
         /// <returns></returns>
         public bool ValidateClientCertificate(object obj, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
-            m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: ValidateClientCertificate: Start");
+            m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: ValidateClientCertificate: Start.");
+
+            if (certificate==null) {
+                m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: ValidateClientCertificate: Client does not have a Certificate!");
+                return false;
+            }
 
             X509Certificate2 certificate2 = new X509Certificate2(certificate);
             string commonname = certificate2.GetNameInfo(X509NameType.SimpleName, false);

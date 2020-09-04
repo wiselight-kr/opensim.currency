@@ -153,7 +153,8 @@ namespace OpenSim.Grid.MoneyServer
                     if (m_checkClientCert) {
                         m_httpServer.CertificateValidationCallback = (RemoteCertificateValidationCallback)m_certVerify.ValidateClientCertificate;
                         m_log.Info("[MONEY SERVER]: Set RemoteCertificateValidationCallback");
-/*
+
+                        /*
                         Type typeBaseHttpServer = typeof(BaseHttpServer); // BaseHttpServer.cs にパッチがあたっていない場合のため
                         PropertyInfo pinfo = typeBaseHttpServer.GetProperty("CertificateValidationCallback");   
 
@@ -164,7 +165,7 @@ namespace OpenSim.Grid.MoneyServer
                         else {
                             m_log.Error("[MONEY SERVER]: StartupSpecific: CheckClientCert is true. But this MoneyServer does not support CheckClientCert!!");
                         }
-*/
+                        */
                     }
                 }
                 else {

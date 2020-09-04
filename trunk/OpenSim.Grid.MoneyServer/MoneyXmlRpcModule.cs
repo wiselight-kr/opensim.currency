@@ -309,7 +309,7 @@ namespace OpenSim.Grid.MoneyServer
         /// <returns></returns>
         public XmlRpcResponse handleClientLogin(XmlRpcRequest request, IPEndPoint remoteClient)
         {
-            m_log.InfoFormat("[MONEY RPC]: handleClientLogin:");
+            m_log.InfoFormat("[MONEY RPC]: handleClientLogin: Start.");
 
             GetSSLCommonName(request);
 
@@ -331,7 +331,7 @@ namespace OpenSim.Grid.MoneyServer
                     return response;
                 }
                 else {
-                    m_log.InfoFormat("[MONEY RPC]: handleClientLogin: SSL Common Name is {0}", commonName);
+                    m_log.InfoFormat("[MONEY RPC]: handleClientLogin: SSL Common Name is \"{0}\"", commonName);
                 }
 
             }
@@ -1529,7 +1529,7 @@ namespace OpenSim.Grid.MoneyServer
 
         public XmlRpcResponse handleWebLogin(XmlRpcRequest request, IPEndPoint remoteClient)
         {
-            //m_log.InfoFormat("[MONEY RPC]: handleWebLogin:");
+            m_log.InfoFormat("[MONEY RPC]: handleWebLogin: Start.");
 
             GetSSLCommonName(request);
 

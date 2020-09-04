@@ -2,7 +2,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 //  OpenSim DTL/NSL Secure Money Server for Linux/Unix
-//                                                        by Fumi.Iseki and NSL '11 5/7
+//                                                        by Fumi.Iseki and NSL 2020 9/4
 //                                                        http://www.nsl.tuis.ac.jp
 
 
@@ -30,9 +30,10 @@ Money Serverを誤魔化すことも不可能ではありません．つまり�
  # cd opensim-0.9.x-source
  # tar xzfv opensim.currency-0.9.x.tar.gz 
 
+ # patch -p0 < opensim.currency-0.9.x/patch/opensim_server.patch    [Client(SIM)認証を行う場合，MoneyServer.exe を起動するサーバにだけ適用します]
  # ./runprebuild.sh 
  # xbuild /target:CLean 
- # xbui
+ # xbuild
 
  # cd opensim.currency-0.9.x
  # ./build.sh

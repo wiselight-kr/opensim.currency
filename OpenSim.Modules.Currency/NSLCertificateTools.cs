@@ -169,7 +169,7 @@ namespace NSL.Certificate.Tools
 
             // None, ChainErrors Error except for． // None, ChainErrors 以外は全てエラーとする．
             if (sslPolicyErrors!=SslPolicyErrors.None && sslPolicyErrors!=SslPolicyErrors.RemoteCertificateChainErrors) {
-                m_log.ErrorFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Policy Error! {0}", sslPolicyErrors);
+                m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Policy Error! {0}", sslPolicyErrors);
                 return false;
             }
 

@@ -46,8 +46,7 @@ namespace NSL.Network.XmlRpc
             m_log.InfoFormat("[MONEY NSL RPC]: XmlRpcResponse certSend: connect to {0}", url);
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            if (request==null)
-            {
+            if (request==null) {
                 throw new XmlRpcException(XmlRpcErrorCodes.TRANSPORT_ERROR, XmlRpcErrorCodes.TRANSPORT_ERROR_MSG +": Could not create request with " + url);
             }
 
@@ -64,8 +63,10 @@ namespace NSL.Network.XmlRpc
             try { 
                 stream = request.GetRequestStream();
             }
+            #pragma warning disable CS0168
             catch (Exception ex) {
-                m_log.ErrorFormat("[MONEY NSL RPC]: GetRequestStream Error: {0}", ex);
+            #pragma warning restore CS0168
+                //m_log.ErrorFormat("[MONEY NSL RPC]: GetRequestStream Error: {0}", ex);
                 stream = null;
             }
             if (stream==null) return null;

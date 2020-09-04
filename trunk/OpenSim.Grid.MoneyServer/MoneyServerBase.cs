@@ -150,6 +150,8 @@ namespace OpenSim.Grid.MoneyServer
             try {
                 if (m_certFilename != "") {
                     m_httpServer = new BaseHttpServer(m_moneyServerPort, true, m_certFilename, m_certPassword);
+                    m_httpServer.CertificateValidationCallback = null;
+                    //
                     if (m_checkClientCert) {
                         m_httpServer.CertificateValidationCallback = (RemoteCertificateValidationCallback)m_certVerify.ValidateClientCertificate;
                         m_log.Info("[MONEY SERVER]: Set RemoteCertificateValidationCallback");
@@ -226,7 +228,7 @@ namespace OpenSim.Grid.MoneyServer
                     m_cert_config = m_server_config;
                 }
 
-                // HTTPS Server Cert (Server Mode)
+                // HTTPS Server Cert (Server Mode)      // サーバ証明書
                 m_certFilename = m_cert_config.GetString("ServerCertFilename", m_certFilename);
                 m_certPassword = m_cert_config.GetString("ServerCertPassword", m_certPassword);
                 if (m_certFilename != "") {
@@ -234,11 +236,11 @@ namespace OpenSim.Grid.MoneyServer
                 }
 
                 // Client Certificate
-                m_checkClientCert = m_cert_config.GetBoolean("CheckClientCert",  m_checkClientCert);
-                m_cacertFilename  = m_cert_config.GetString("CACertFilename",    m_cacertFilename);
-                m_clcrlFilename   = m_cert_config.GetString("ClientCrlFilename", m_clcrlFilename);
+                m_checkClientCert = m_cert_config.GetBoolean("CheckClientCert",   m_checkClientCert);
+                m_cacertFilename  = m_cert_config.GetString ("CACertFilename",    m_cacertFilename);
+                m_clcrlFilename   = m_cert_config.GetString ("ClientCrlFilename", m_clcrlFilename);
                 //
-                if (m_checkClientCert && m_cacertFilename != "") {
+                if (m_checkClientCert && (m_cacertFilename != "")) {
                     m_certVerify.SetPrivateCA(m_cacertFilename);
                     m_log.Info("[MONEY SERVER]: ReadIniConfig: Execute Authentication of Clients. CA  file is " + m_cacertFilename);
                 }

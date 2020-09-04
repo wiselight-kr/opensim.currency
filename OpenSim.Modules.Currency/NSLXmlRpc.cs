@@ -63,9 +63,9 @@ namespace NSL.Network.XmlRpc
             try { 
                 stream = request.GetRequestStream();
             }
-            #pragma warning disable CS0168
+#pragma warning disable CS0168
             catch (Exception ex) {
-            #pragma warning restore CS0168
+#pragma warning restore CS0168
                 //m_log.ErrorFormat("[MONEY NSL RPC]: GetRequestStream Error: {0}", ex);
                 stream = null;
             }

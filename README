@@ -24,6 +24,7 @@ Attention)
  # cd opensim-0.9.x-source
  # tar xzfv opensim.currency-0.9.x.tar.gz 
  
+ # patch -p0 < opensim.currency-0.9.x/patch/opensim_server.patch    [Case use Client(SIM) authentication, only need for the server that executs MoneyServer.exe]
  # ./runprebuild.sh 
  # xbuild /target:CLean 
  # xbuild 

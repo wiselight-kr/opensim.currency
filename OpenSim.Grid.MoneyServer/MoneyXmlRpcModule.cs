@@ -200,7 +200,11 @@ namespace OpenSim.Grid.MoneyServer
                 ServicePointManager.ServerCertificateValidationCallback = null;
                 m_log.Info("[MONEY RPC]: Initialise: CACertFilename is empty. Therefor, CheckServerCert is forced to false");
             }
-            //ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
+            //ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);/
+
+            // by UbitUmarov 
+            ServicePointManager.UseNagleAlgorithm = false;
+            ServicePointManager.Expect100Continue = false;
 
             m_sessionDic = m_moneyCore.GetSessionDic();
             m_secureSessionDic = m_moneyCore.GetSecureSessionDic();

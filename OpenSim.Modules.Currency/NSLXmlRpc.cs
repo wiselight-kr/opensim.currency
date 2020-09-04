@@ -43,8 +43,8 @@ namespace NSL.Network.XmlRpc
         }
 
 
-      //public XmlRpcResponse certSend(String url, X509Certificate2 myClientCert, NSLCertificateVerify certVerify, bool checkServerCert, Int32 timeout)
-        public XmlRpcResponse certSend(String url, X509Certificate2 myClientCert, bool checkServerCert, Int32 timeout)
+        //public XmlRpcResponse certSend(String url, X509Certificate2 myClientCert, bool checkServerCert, Int32 timeout)
+        public XmlRpcResponse certSend(String url, X509Certificate2 myClientCert, NSLCertificateVerify certVerify, bool checkServerCert, Int32 timeout)
         {
             m_log.InfoFormat("[MONEY NSL RPC]: XmlRpcResponse certSend: connect to {0}", url);
 
@@ -60,12 +60,12 @@ namespace NSL.Network.XmlRpc
             request.UserAgent = "NSLXmlRpcRequest";
 
             if (myClientCert!=null) request.ClientCertificates.Add(myClientCert);  // Own certificate   // 自身の証明書
-            if (checkServerCert /*&& (certVerify != null)*/) {
-                //request.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(certVerify.ValidateServerCertificate);
+            if (checkServerCert && (certVerify != null)) {
+                request.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(certVerify.ValidateServerCertificate);
             }
             else {
                 request.Headers.Add("NoVerifyCert", "true");   // Do not verify the certificate of the other party  // 相手の証明書を検証しない
-                //request.ServerCertificateValidationCallback = null;
+                request.ServerCertificateValidationCallback = null;
             }
 
             Stream stream = null;

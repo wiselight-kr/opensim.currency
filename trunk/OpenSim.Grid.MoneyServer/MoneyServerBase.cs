@@ -251,7 +251,7 @@ namespace OpenSim.Grid.MoneyServer
                 if (m_checkClientCert) {
                     if (m_clcrlFilename != "") {
                         m_certVerify.SetPrivateCRL(m_clcrlFilename);
-                        m_log.Info("[MONEY SERVER]: ReadIniConfig: Execute Authentication of Clients. CRL file is " + m_clcrlFilename);
+                        m_log.Info("[MONEY SERVER]: ReadIniConfig: Execute Authentication of Clients. CRL  file is " + m_clcrlFilename);
                     }
                 }
             }

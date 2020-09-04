@@ -188,17 +188,17 @@ namespace OpenSim.Grid.MoneyServer
             // Server Authentication
             m_checkServerCert = m_cert_config.GetBoolean("CheckServerCert", m_checkServerCert);
 
-            // CA: MoneyServer が XMLRPC のWebサーバのサーバ証明書を認証するための設定
+            // CA : MoneyServer が XMLRPC のWebサーバのサーバ証明書を認証するための設
             m_cacertFilename = m_cert_config.GetString("CACertFilename", m_cacertFilename);
-            if (m_checkServerCert && (m_cacertFilename != "")) {
+            if (m_cacertFilename != "") {
                 m_certVerify.SetPrivateCA(m_cacertFilename);
-//              ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
+                ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
                 m_log.Info("[MONEY XMLRPC]: Initialise: Execute Authentication of Server. CA file is " + m_cacertFilename);
             }
             else {
                 m_checkServerCert = false;
-//              ServicePointManager.ServerCertificateValidationCallback = null;
-                m_log.Info("[MONEY XMLRPC]: Initialise: No check XMLRPC or CACertFilename is empty. Therefor, CheckServerCert is forced to false");
+                ServicePointManager.ServerCertificateValidationCallback = null;
+                m_log.Info("[MONEY XMLRPC]: Initialise: CACertFilename is empty. Therefor, CheckServerCert is forced to false");
             }
 
             m_sessionDic = m_moneyCore.GetSessionDic();
@@ -1310,7 +1310,8 @@ namespace OpenSim.Grid.MoneyServer
                 //XmlRpcRequest moneyModuleReq = new XmlRpcRequest(method, arrayParams);
                 //moneyServResp = moneyModuleReq.Send(uri, MONEYMODULE_REQUEST_TIMEOUT);
                 NSLXmlRpcRequest moneyModuleReq = new NSLXmlRpcRequest(method, arrayParams);
-                moneyServResp = moneyModuleReq.certSend(uri, m_clientCert, m_certVerify, m_checkServerCert, MONEYMODULE_REQUEST_TIMEOUT);
+                moneyServResp = moneyModuleReq.certSend(uri, m_clientCert, m_checkServerCert, MONEYMODULE_REQUEST_TIMEOUT);
+                //moneyServResp = moneyModuleReq.certSend(uri, m_clientCert, m_certVerify, m_checkServerCert, MONEYMODULE_REQUEST_TIMEOUT);
             }
             catch (Exception ex) {
                 m_log.ErrorFormat("[MONEY XMLRPC]: genericCurrencyXMLRPCRequest: Unable to connect to Region Server {0}", uri);

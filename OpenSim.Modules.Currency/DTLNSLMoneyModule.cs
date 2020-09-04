@@ -298,7 +298,7 @@ namespace OpenSim.Modules.Currency
 
                 // Server Authentication  // MoneyServer のサーバ証明書の認証
                 m_checkServerCert = economyConfig.GetBoolean("CheckServerCert", m_checkServerCert);
-                m_cacertFilename  = economyConfig.GetString("CACertFilename",   m_cacertFilename);
+                m_cacertFilename  = economyConfig.GetString ("CACertFilename",  m_cacertFilename);
                 if (m_cacertFilename!="") {
                     m_certVerify.SetPrivateCA(m_cacertFilename);
                     m_log.InfoFormat("[MONEY MODULE]: Execute Authentication of Server. CA Cert File is " + m_cacertFilename);
@@ -307,7 +307,7 @@ namespace OpenSim.Modules.Currency
                     m_checkServerCert = false;
                     m_log.Info("[MONEY MODULE]: Initialise: CACertFilename is empty. Therefor, CheckServerCert is forced to false");
                 }
-//              ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
+                ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
 
                 // Settlement
                 m_use_web_settle = economyConfig.GetBoolean("SettlementByWeb",   m_use_web_settle);
@@ -1808,7 +1808,8 @@ namespace OpenSim.Modules.Currency
             XmlRpcResponse moneyServResp = null;
             try {
                 NSLXmlRpcRequest moneyModuleReq = new NSLXmlRpcRequest(method, arrayParams);
-                moneyServResp = moneyModuleReq.certSend(m_moneyServURL, m_cert, m_certVerify, m_checkServerCert, MONEYMODULE_REQUEST_TIMEOUT);
+                moneyServResp = moneyModuleReq.certSend(m_moneyServURL, m_cert, m_checkServerCert, MONEYMODULE_REQUEST_TIMEOUT);
+                //moneyServResp = moneyModuleReq.certSend(m_moneyServURL, m_cert, m_certVerify, m_checkServerCert, MONEYMODULE_REQUEST_TIMEOUT);
             }
             catch (Exception ex) {
                 m_log.ErrorFormat("[MONEY MODULE]: genericCurrencyXMLRPCRequest: Unable to connect to Money Server {0}", m_moneyServURL);

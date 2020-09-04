@@ -194,7 +194,7 @@ namespace NSL.Certificate.Tools
         /// <returns></returns>
         public bool ValidateClientCertificate(object obj, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
-            //m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: ValidateClientCertificate: Start.");
+            m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: ValidateClientCertificate: Start.");
 
             if (certificate==null) {
                 m_log.InfoFormat("[NSL CLIENT CERT VERIFY]: ValidateClientCertificate: Client does not have a Certificate!");

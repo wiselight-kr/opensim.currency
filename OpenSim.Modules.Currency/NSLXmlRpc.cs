@@ -60,11 +60,12 @@ namespace NSL.Network.XmlRpc
             request.UserAgent = "NSLXmlRpcRequest";
 
             if (myClientCert!=null) request.ClientCertificates.Add(myClientCert);  // Own certificate   // 自身の証明書
-            if (checkServerCert & (certVerify!=null)) {
+            if (checkServerCert && (certVerify != null)) {
                 request.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(certVerify.ValidateServerCertificate);
             }
             else {
                 request.Headers.Add("NoVerifyCert", "true");   // Do not verify the certificate of the other party  // 相手の証明書を検証しない
+                request.ServerCertificateValidationCallback = null;
             }
 
 
@@ -75,7 +76,7 @@ namespace NSL.Network.XmlRpc
 #pragma warning disable CS0168
             catch (Exception ex) {
 #pragma warning restore CS0168
-                //m_log.ErrorFormat("[MONEY NSL RPC]: GetRequestStream Error: {0}", ex);
+                m_log.ErrorFormat("[MONEY NSL RPC]: GetRequestStream Error: {0}", ex);
                 stream = null;
             }
             if (stream==null) return null;

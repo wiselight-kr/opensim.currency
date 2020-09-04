@@ -228,7 +228,7 @@ namespace OpenSim.Grid.MoneyServer
                     m_cert_config = m_server_config;
                 }
 
-                // HTTPS Server Cert (Server Mode)      // サーバ証明書
+                // HTTPS Server Cert (Server Mode)    // サーバ証明書
                 m_certFilename = m_cert_config.GetString("ServerCertFilename", m_certFilename);
                 m_certPassword = m_cert_config.GetString("ServerCertPassword", m_certPassword);
                 if (m_certFilename != "") {
@@ -251,7 +251,7 @@ namespace OpenSim.Grid.MoneyServer
                 if (m_checkClientCert) {
                     if (m_clcrlFilename != "") {
                         m_certVerify.SetPrivateCRL(m_clcrlFilename);
-                        m_log.Info("[MONEY SERVER]: ReadIniConfig: Execute Authentication of Clients. CRL  file is " + m_clcrlFilename);
+                        m_log.Info("[MONEY SERVER]: ReadIniConfig: Execute Authentication of Clients. CRL file is " + m_clcrlFilename);
                     }
                 }
             }

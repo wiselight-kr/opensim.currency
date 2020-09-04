@@ -19,7 +19,6 @@ using System.Net.Security;
 using NSL.Certificate.Tools;
 
 
-
 namespace NSL.Network.XmlRpc 
 {
     public class NSLXmlRpcRequest : XmlRpcRequest
@@ -44,9 +43,10 @@ namespace NSL.Network.XmlRpc
         }
 
 
-        public XmlRpcResponse certSend(String url, X509Certificate2 myClientCert, NSLCertificateVerify certVerify, bool checkServerCert, Int32 timeout)
+      //public XmlRpcResponse certSend(String url, X509Certificate2 myClientCert, NSLCertificateVerify certVerify, bool checkServerCert, Int32 timeout)
+        public XmlRpcResponse certSend(String url, X509Certificate2 myClientCert, bool checkServerCert, Int32 timeout)
         {
-            m_log.InfoFormat("[MONEY NSL XMLRPC]: XmlRpcResponse certSend: connect to {0}", url);
+            m_log.InfoFormat("[MONEY NSL RPC]: XmlRpcResponse certSend: connect to {0}", url);
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             if (request==null) {
@@ -60,14 +60,13 @@ namespace NSL.Network.XmlRpc
             request.UserAgent = "NSLXmlRpcRequest";
 
             if (myClientCert!=null) request.ClientCertificates.Add(myClientCert);  // Own certificate   // 自身の証明書
-            if (checkServerCert && (certVerify != null)) {
-                request.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(certVerify.ValidateServerCertificate);
+            if (checkServerCert /*&& (certVerify != null)*/) {
+                //request.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(certVerify.ValidateServerCertificate);
             }
             else {
                 request.Headers.Add("NoVerifyCert", "true");   // Do not verify the certificate of the other party  // 相手の証明書を検証しない
-                request.ServerCertificateValidationCallback = null;
+                //request.ServerCertificateValidationCallback = null;
             }
-
 
             Stream stream = null;
             try { 
@@ -76,7 +75,7 @@ namespace NSL.Network.XmlRpc
 #pragma warning disable CS0168
             catch (Exception ex) {
 #pragma warning restore CS0168
-                m_log.ErrorFormat("[MONEY NSL XMLRPC]: GetRequestStream Error: {0}", ex);
+                m_log.ErrorFormat("[MONEY NSL RPC]: GetRequestStream Error: {0}", ex);
                 stream = null;
             }
             if (stream==null) return null;
@@ -92,7 +91,7 @@ namespace NSL.Network.XmlRpc
                 response = (HttpWebResponse)request.GetResponse();
             }
             catch (Exception ex) {
-                m_log.ErrorFormat("[MONEY NSL XMLRPC]: XmlRpcResponse certSend: GetResponse Error: {0}", ex.ToString());
+                m_log.ErrorFormat("[MONEY NSL RPC]: XmlRpcResponse certSend: GetResponse Error: {0}", ex.ToString());
             }
             StreamReader input = new StreamReader(response.GetResponseStream());
 

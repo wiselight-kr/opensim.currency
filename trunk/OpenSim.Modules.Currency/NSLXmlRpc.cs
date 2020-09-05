@@ -67,7 +67,7 @@ namespace NSL.Network.XmlRpc
             }
             //
             if (certVerify != null) {
-                //request.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(certVerify.ValidateServerCertificate);
+                request.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(certVerify.ValidateServerCertificate);
             }
             //
             if (certVerify == null) checkServerCert = false;

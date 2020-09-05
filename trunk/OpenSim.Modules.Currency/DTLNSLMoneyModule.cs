@@ -316,6 +316,9 @@ namespace OpenSim.Modules.Currency
 				}
                 //ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
 
+      ServicePointManager.UseNagleAlgorithm = false;
+      ServicePointManager.Expect100Continue = false;
+
                 // Settlement
                 m_use_web_settle = economyConfig.GetBoolean("SettlementByWeb",   m_use_web_settle);
                 m_settle_url     = economyConfig.GetString ("SettlementURL",     m_settle_url);

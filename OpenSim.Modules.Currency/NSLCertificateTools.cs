@@ -71,10 +71,11 @@ namespace NSL.Certificate.Tools
         /// Set Private Certificate
         /// </summary>
         /// <param name="certfile"></param>
-        public void SetPrivateCert(string certfile, string pass)
+        /// <param name="passwd"></param>
+        public void SetPrivateCert(string certfile, string passwd)
         {
             try {
-                m_mycert = new X509Certificate2(certfile, pass);
+                m_mycert = new X509Certificate2(certfile, passwd);
             }
             catch (Exception ex) {
                 m_mycert = null;

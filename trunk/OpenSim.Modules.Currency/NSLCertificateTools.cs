@@ -184,7 +184,6 @@ namespace NSL.Certificate.Tools
             }
 
             X509Certificate2 certificate2 = new X509Certificate2(certificate);
-if (!certificate2.Verify()) m_log.ErrorFormat("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
             string commonname = certificate2.GetNameInfo(X509NameType.SimpleName, false);
             m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Common Name is \"{0}\"", commonname);
 

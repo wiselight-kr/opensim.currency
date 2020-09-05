@@ -206,6 +206,9 @@ namespace OpenSim.Grid.MoneyServer
             }
             //ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
 
+            ServicePointManager.UseNagleAlgorithm = false;
+            ServicePointManager.Expect100Continue = false;
+
             m_sessionDic = m_moneyCore.GetSessionDic();
             m_secureSessionDic = m_moneyCore.GetSecureSessionDic();
             m_webSessionDic = m_moneyCore.GetWebSessionDic();

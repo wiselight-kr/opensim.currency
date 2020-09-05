@@ -294,21 +294,26 @@ namespace OpenSim.Modules.Currency
                     m_certVerify.SetPrivateCert(m_certFilename, m_certPassword);
                     //m_cert = new X509Certificate2(m_certFilename, m_certPassword);
                     //m_cert = new X509Certificate2(m_certFilename, m_certPassword, X509KeyStorageFlags.MachineKeySet);
-                    m_log.InfoFormat("[MONEY MODULE]: Initialise: Issue Authentication of Client. Cert File is " + m_certFilename);
+                    m_log.Info("[MONEY MODULE]: Initialise: Issue Authentication of Client. Cert File is " + m_certFilename);
                 }
 
                 // Server Authentication  // MoneyServer のサーバ証明書のチェック
                 m_checkServerCert = economyConfig.GetBoolean("CheckServerCert", m_checkServerCert);
                 m_cacertFilename  = economyConfig.GetString ("CACertFilename",  m_cacertFilename);
-                if (m_checkServerCert && (m_cacertFilename != "")) {
-                    m_certVerify.SetPrivateCA(m_cacertFilename);
-                    //ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
-                    m_log.InfoFormat("[MONEY MODULE]: Execute Authentication of Server. CA Cert File is " + m_cacertFilename);
-                }
-                else {
+
+                if (m_cacertFilename != "") {
+					m_certVerify.SetPrivateCA(m_cacertFilename);
+				}
+         		else {
                     m_checkServerCert = false;
+				}
+
+                if (m_checkServerCert) {
+					m_log.Info("[MONEY MODULE]: Initialise: Execute Authentication of Server. CA Cert File is " + m_cacertFilename);
+				}
+				else {
                     m_log.Info("[MONEY MODULE]: Initialise: No check Money Server or CACertFilename is empty. CheckServerCert is false.");
-                }
+				}
                 ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
 
                 // Settlement
@@ -610,7 +615,7 @@ namespace OpenSim.Modules.Currency
         // 
         private void OnNewClient(IClientAPI client)
         {
-            m_log.InfoFormat("[MONEY MODULE]: OnNewClient");
+            //m_log.InfoFormat("[MONEY MODULE]: OnNewClient");
 
             client.OnEconomyDataRequest += OnEconomyDataRequest;
             client.OnLogout             += ClientClosed;

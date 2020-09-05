@@ -191,15 +191,20 @@ namespace OpenSim.Grid.MoneyServer
 
             // CA : MoneyServer が XMLRPC のWebサーバのサーバ証明書を認証するための設定
             m_cacertFilename = m_cert_config.GetString("CACertFilename", m_cacertFilename);
-            if (m_checkServerCert && (m_cacertFilename != "")) {
+            if (m_cacertFilename != "") {
                 m_certVerify.SetPrivateCA(m_cacertFilename);
-                ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
-                m_log.Info("[MONEY XMLRPC]: Initialise: Execute Authentication of Server. CA file is " + m_cacertFilename);
             }
             else {
                 m_checkServerCert = false;
+            }
+
+            if (m_checkServerCert) {
+                m_log.Info("[MONEY XMLRPC]: Initialise: Execute Authentication of Server. CA file is " + m_cacertFilename);
+            }
+            else {
                 m_log.Info("[MONEY XMLRPC]: Initialise: No check XMLRPC Server or CACertFilename is empty. CheckServerCert is false.");
             }
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
 
             m_sessionDic = m_moneyCore.GetSessionDic();
             m_secureSessionDic = m_moneyCore.GetSecureSessionDic();

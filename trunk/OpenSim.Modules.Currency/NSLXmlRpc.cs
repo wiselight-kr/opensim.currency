@@ -65,11 +65,10 @@ namespace NSL.Network.XmlRpc
             if (clientCert != null) request.ClientCertificates.Add(clientCert);  // Own certificate   // 自身の証明書
 
             if (checkServerCert && (certVerify != null)) {
-                //request.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(certVerify.ValidateServerCertificate);
+                //request.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(certVerify.ValidateServerCertificate);
             }
             else {
                 request.Headers.Add("NoVerifyCert", "true");   // Do not verify the certificate of the other party  // 相手の証明書を検証しない
-                //request.ServerCertificateValidationCallback = null;
             }
 
             Stream stream = null;

@@ -277,9 +277,9 @@ namespace NSL.Certificate.Tools
         public bool CheckValidationResult(ServicePoint srvPoint, X509Certificate certificate, WebRequest request, int certificateProblem)
         {
             if (certificateProblem == 0 ||              // normal           // 正常
-                certificateProblem == -2146762487 ||    // Not trusted?     // 信頼されてない？
+                certificateProblem == -2146762487 ||    // Not trusted      // 信頼されてない
                 certificateProblem == -2146762495 ||    // Expired          // 期限切れ
-                certificateProblem == -2146762481) {    // Incorrect name?  // 名前不正？
+                certificateProblem == -2146762481) {    // Incorrect name   // 名前不正
                 return true;
             }
             else {

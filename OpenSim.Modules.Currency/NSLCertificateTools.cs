@@ -149,7 +149,7 @@ namespace NSL.Certificate.Tools
             if (obj is HttpWebRequest) {
                 HttpWebRequest Request = (HttpWebRequest)obj;
                 string noVerify = Request.Headers.Get("NoVerifyCert");
-                if (noVerify!=null && noVerify.ToLower()=="true") {
+                if ((noVerify != null) && (noVerify.ToLower() == "true")) {
                     m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: No Verify Certificate.");
                     return true;
                 }
@@ -168,7 +168,7 @@ namespace NSL.Certificate.Tools
             */
 
             // None, ChainErrors Error except for． // None, ChainErrors 以外は全てエラーとする．
-            if (sslPolicyErrors!=SslPolicyErrors.None && sslPolicyErrors!=SslPolicyErrors.RemoteCertificateChainErrors) {
+            if ((sslPolicyErrors != SslPolicyErrors.None) && (sslPolicyErrors != SslPolicyErrors.RemoteCertificateChainErrors)) {
                 m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: Policy Error! {0}", sslPolicyErrors);
                 return false;
             }

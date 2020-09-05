@@ -192,12 +192,12 @@ namespace OpenSim.Grid.MoneyServer
             m_cacertFilename = m_cert_config.GetString("CACertFilename", m_cacertFilename);
             if (m_checkServerCert && (m_cacertFilename != "")) {
                 m_certVerify.SetPrivateCA(m_cacertFilename);
-                ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
+                //ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
                 m_log.Info("[MONEY XMLRPC]: Initialise: Execute Authentication of Server. CA file is " + m_cacertFilename);
             }
             else {
                 m_checkServerCert = false;
-                ServicePointManager.ServerCertificateValidationCallback = null;
+                //ServicePointManager.ServerCertificateValidationCallback = null;
                 m_log.Info("[MONEY XMLRPC]: Initialise: No check XMLRPC Server or CACertFilename is empty. CheckServerCert is false.");
             }
 

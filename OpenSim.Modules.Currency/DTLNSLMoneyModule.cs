@@ -314,7 +314,7 @@ namespace OpenSim.Modules.Currency
 				else {
                     m_log.Info("[MONEY MODULE]: Initialise: No check Money Server or CACertFilename is empty. CheckServerCert is false.");
 				}
-                //ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
+                ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
 
       ServicePointManager.UseNagleAlgorithm = false;
       ServicePointManager.Expect100Continue = false;

@@ -67,10 +67,10 @@ namespace NSL.Network.XmlRpc
             }
             //
             if (certVerify != null) {
-                request.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(certVerify.ValidateServerCertificate);
+                //request.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(certVerify.ValidateServerCertificate);
             }
             //
-            if ((certVerify != null) || (clientCert != null)) checkServerCert = false;
+            if (certVerify == null) checkServerCert = false;
             if (!checkServerCert) {
                 request.Headers.Add("NoVerifyCert", "true");   // Do not verify the certificate of the other party  // 相手の証明書を検証しない
             }

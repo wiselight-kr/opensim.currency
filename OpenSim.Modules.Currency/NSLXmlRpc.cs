@@ -44,7 +44,7 @@ namespace NSL.Network.XmlRpc
 
 
         //public XmlRpcResponse certSend(String url, X509Certificate2 myClientCert, bool checkServerCert, Int32 timeout)
-        public XmlRpcResponse certSend(String url, X509Certificate2 myClientCert, NSLCertificateVerify certVerify, bool checkServerCert, Int32 timeout)
+        public XmlRpcResponse certSend(String url, NSLCertificateVerify certVerify, bool checkServerCert, Int32 timeout)
         {
             m_log.InfoFormat("[MONEY NSL RPC]: XmlRpcResponse certSend: connect to {0}", url);
 
@@ -53,19 +53,23 @@ namespace NSL.Network.XmlRpc
                 throw new XmlRpcException(XmlRpcErrorCodes.TRANSPORT_ERROR, XmlRpcErrorCodes.TRANSPORT_ERROR_MSG +": Could not create request with " + url);
             }
 
+            X509Certificate2 clientCert = null;
+
             request.Method = "POST";
             request.ContentType = "text/xml";
             request.AllowWriteStreamBuffering = true;
             request.Timeout = timeout;
             request.UserAgent = "NSLXmlRpcRequest";
 
-            if (myClientCert != null) request.ClientCertificates.Add(myClientCert);  // Own certificate   // 自身の証明書
+            if (certVerify != null) clientCert = certVerify.GetPrivateCert();
+            if (clientCert != null) request.ClientCertificates.Add(clientCert);  // Own certificate   // 自身の証明書
+
             if (checkServerCert && (certVerify != null)) {
-                request.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(certVerify.ValidateServerCertificate);
+                //request.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(certVerify.ValidateServerCertificate);
             }
             else {
                 request.Headers.Add("NoVerifyCert", "true");   // Do not verify the certificate of the other party  // 相手の証明書を検証しない
-                request.ServerCertificateValidationCallback = null;
+                //request.ServerCertificateValidationCallback = null;
             }
 
             Stream stream = null;

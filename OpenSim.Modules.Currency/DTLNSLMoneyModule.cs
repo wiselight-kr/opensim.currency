@@ -200,7 +200,7 @@ namespace OpenSim.Modules.Currency
         private string m_certPassword    = "";
         private bool   m_checkServerCert = false;
         private string m_cacertFilename  = "";
-        private X509Certificate2 m_cert  = null;
+        //private X509Certificate2 m_cert  = null;
 
         private bool   m_use_web_settle  = false;
         private string m_settle_url      = "";
@@ -291,23 +291,25 @@ namespace OpenSim.Modules.Currency
                 m_certFilename = economyConfig.GetString("ClientCertFilename", m_certFilename);
                 m_certPassword = economyConfig.GetString("ClientCertPassword", m_certPassword);
                 if (m_certFilename!="") {
-                    m_cert = new X509Certificate2(m_certFilename, m_certPassword);
+                    m_certVerify.SetPrivateCert(m_certFilename, m_certPassword);
+                    //m_cert = new X509Certificate2(m_certFilename, m_certPassword);
                     //m_cert = new X509Certificate2(m_certFilename, m_certPassword, X509KeyStorageFlags.MachineKeySet);
                     m_log.InfoFormat("[MONEY MODULE]: Initialise: Issue Authentication of Client. Cert File is " + m_certFilename);
                 }
 
-                // Server Authentication  // MoneyServer のサーバ証明書の認証
+                // Server Authentication  // MoneyServer のサーバ証明書のチェック
                 m_checkServerCert = economyConfig.GetBoolean("CheckServerCert", m_checkServerCert);
                 m_cacertFilename  = economyConfig.GetString ("CACertFilename",  m_cacertFilename);
                 if (m_checkServerCert && (m_cacertFilename != "")) {
                     m_certVerify.SetPrivateCA(m_cacertFilename);
+                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
                     m_log.InfoFormat("[MONEY MODULE]: Execute Authentication of Server. CA Cert File is " + m_cacertFilename);
                 }
                 else {
                     m_checkServerCert = false;
+                    ServicePointManager.ServerCertificateValidationCallback = null;
                     m_log.Info("[MONEY MODULE]: Initialise: No check Money Server or CACertFilename is empty. CheckServerCert is false.");
                 }
-                //ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m_certVerify.ValidateServerCertificate);
 
                 // Settlement
                 m_use_web_settle = economyConfig.GetBoolean("SettlementByWeb",   m_use_web_settle);
@@ -1809,7 +1811,7 @@ namespace OpenSim.Modules.Currency
             try {
                 NSLXmlRpcRequest moneyModuleReq = new NSLXmlRpcRequest(method, arrayParams);
                 //moneyServResp = moneyModuleReq.certSend(m_moneyServURL, m_cert, m_checkServerCert, MONEYMODULE_REQUEST_TIMEOUT);
-                moneyServResp = moneyModuleReq.certSend(m_moneyServURL, m_cert, m_certVerify, m_checkServerCert, MONEYMODULE_REQUEST_TIMEOUT);
+                moneyServResp = moneyModuleReq.certSend(m_moneyServURL, m_certVerify, m_checkServerCert, MONEYMODULE_REQUEST_TIMEOUT);
             }
             catch (Exception ex) {
                 m_log.ErrorFormat("[MONEY MODULE]: genericCurrencyXMLRPCRequest: Unable to connect to Money Server {0}", m_moneyServURL);

@@ -29,6 +29,7 @@ namespace NSL.Certificate.Tools
 
         private X509Chain m_chain = null;
         private X509Certificate2 m_cacert = null;
+        private X509Certificate2 m_mycert = null;
 
         private Mono.Security.X509.X509Crl m_clientcrl  = null;
 
@@ -64,6 +65,32 @@ namespace NSL.Certificate.Tools
             SetPrivateCA (certfile);
             SetPrivateCRL(crlfile);
         }
+
+
+        /// <summary>
+        /// Set Private Certificate
+        /// </summary>
+        /// <param name="certfile"></param>
+        public void SetPrivateCert(string certfile, string pass)
+        {
+            try {
+                m_mycert = new X509Certificate2(certfile, pass);
+            }
+            catch (Exception ex) {
+                m_mycert = null;
+                m_log.ErrorFormat("[SET PRIVATE CERT]: Cert File setting error [{0}]. {1}", certfile, ex);
+            }
+        }
+
+
+        /// <summary>
+        /// Get Private Certificate
+        /// </summary>
+        public X509Certificate2  GetPrivateCert()
+        {
+            return m_mycert;
+        }
+
 
 
         /// <summary>

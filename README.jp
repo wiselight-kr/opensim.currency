@@ -30,7 +30,8 @@ Money Serverを誤魔化すことも不可能ではありません．つまり�
  # cd opensim-0.9.x-source
  # tar xzfv opensim.currency-0.9.x.tar.gz 
 
- # patch -p0 < opensim.currency-0.9.x/patch/opensim_server.patch    [Client(SIM)認証を行う場合，MoneyServer.exe を起動するサーバにだけ適用します]
+// # patch -p0 < opensim.currency-0.9.x/patch/opensim_server.patch    [Client(SIM)認証を行う場合，MoneyServer.exe を起動するサーバにだけ適用します]
+
  # ./runprebuild.sh 
  # xbuild /target:CLean 
  # xbuild

@@ -64,13 +64,12 @@ namespace NSL.Network.XmlRpc
             if (certVerify != null) {
                 clientCert = certVerify.GetPrivateCert();
                 if (clientCert != null) request.ClientCertificates.Add(clientCert);  // Own certificate   // 自身の証明書
-            }
-            //
-            if (certVerify != null) {
                 request.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(certVerify.ValidateServerCertificate);
             }
+            else {
+                checkServerCert = false;
+            }
             //
-            if (certVerify == null) checkServerCert = false;
             if (!checkServerCert) {
                 request.Headers.Add("NoVerifyCert", "true");   // Do not verify the certificate of the other party  // 相手の証明書を検証しない
             }

@@ -178,7 +178,7 @@ namespace NSL.Certificate.Tools
                 HttpWebRequest Request = (HttpWebRequest)obj;
                 string noVerify = Request.Headers.Get("NoVerifyCert");
                 if ((noVerify != null) && (noVerify.ToLower() == "true")) {
-                    m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: No Verify Certificate.");
+                    m_log.InfoFormat("[NSL SERVER CERT VERIFY]: ValidateServerCertificate: No Verify Server Certificate.");
                     return true;
                 }
             }

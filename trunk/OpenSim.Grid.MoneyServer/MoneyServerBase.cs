@@ -223,7 +223,7 @@ namespace OpenSim.Grid.MoneyServer
                 //
                 // [Certificate]
                 m_cert_config = moneyConfig.m_config.Configs["Certificate"];
-                if (m_cert_config==null) {
+                if (m_cert_config == null) {
                     m_log.Info("[MONEY SERVER]: [Certificate] section is not found. Using [MoneyServer] section instead");
                     m_cert_config = m_server_config;
                 }
@@ -286,6 +286,7 @@ namespace OpenSim.Grid.MoneyServer
 #pragma warning restore CA1031 // Do not catch general exception types
 #pragma warning restore S2486 // Generic exceptions should not be ignored
         }
+
 
         /// <summary>
         /// Setup Money Services
@@ -365,6 +366,7 @@ namespace OpenSim.Grid.MoneyServer
         }
 
     }
+
 
 
     /// <summary>
